@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+import Build from '@material-ui/icons/Build';
 import { Auth } from 'aws-amplify';
 import Link from '@material-ui/core/Link';
 import UserContext from '../context/user-context';
@@ -95,8 +95,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SignIn = (signIn) => {
-  const user = useContext(UserContext)
+const SignIn = () => {
+  const user = useContext(UserContext);
   const classes = useStyles();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -128,7 +128,7 @@ const SignIn = (signIn) => {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <AccessAlarmIcon />
+            <Build />
           </Avatar>
           <Typography component="h1" variant="h5" className={classes.header}>
             Sign in
