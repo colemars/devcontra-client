@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import configureAmplify from '../src/amplify';
+import WithAuth from '../decorators/WithAuth';
 
 class MyApp extends App {
   componentDidMount() {
@@ -27,7 +28,9 @@ class MyApp extends App {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Component {...pageProps} />
+          <WithAuth >
+            <Component {...pageProps} />
+          </WithAuth>
         </ThemeProvider>
       </Container>
     );
