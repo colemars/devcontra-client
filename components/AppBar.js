@@ -6,9 +6,10 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import UserContext from '../context/user-context';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Link from 'next/link';
+import { useAuthContext } from "../context/user-context";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,11 +27,15 @@ const useStyles = makeStyles(theme => ({
   demo: {
     right: '2'
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit"
+  }
 }));
 
 const DefaultAppBar = () => {
   const classes = useStyles();
-  const user = useContext(UserContext);
+  const { isLoggedIn } = useAuthContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -47,14 +52,18 @@ const DefaultAppBar = () => {
       <AppBar position="static" color="default" className={classes.bar}>
         <Toolbar>
           <Typography variant="h5" className={classes.logoName} >
-            dev.contra
+            <Link href="/" passhref>
+              <a className={ classes.link }>
+                dev.contra
+              </a>
+            </Link>
           </Typography>
           <Button color="inherit" edge="end">
             <Typography variant="h5" className={classes.demo} >
               demo
             </Typography>
           </Button>
-            {user.isLoggedIn && (
+            {isLoggedIn && (
             <div>
               <IconButton
                 aria-label="account of current user"
