@@ -84,7 +84,6 @@ const useStyles2 = makeStyles(theme => ({
 }));
 
 const CustomizedSnackbars = (props) => {
-  console.log(props)
   const classes = useStyles2(); 
   const { message, variant, open, setOpen } = props;
 
