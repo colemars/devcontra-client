@@ -16,16 +16,17 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   logoName: {
-    color: theme.palette.primary.main,
+    color: theme.palette.paper.main,
     marginRight: theme.spacing(2),
     flexGrow: 1
   },
   bar: {
-    backgroundColor: theme.palette.paper.main,
-    boxShadow: 'none'
+    backgroundColor: theme.palette.primary.main,
+    // boxShadow: 'none'
   },
   demo: {
-    right: '2'
+    right: '2',
+    color: theme.palette.paper.main
   },
   link: {
     textDecoration: "none",
