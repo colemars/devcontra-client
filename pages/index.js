@@ -11,21 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Build from '@material-ui/icons/Build';
 import { Auth } from 'aws-amplify';
-import Link from '@material-ui/core/Link';
-import UserContext from '../context/user-context';
+// import Link from '@material-ui/core/Link';
+import Link from 'next/link';
+import { useAuthContext } from "../context/user-context";
 import Layout from '../components/Layout';
-
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        DevContra
-      </Link>{' '}
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
+import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -37,7 +27,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.paper.main
   },
   link: {
-    color: theme.palette.primary.dark
+    textDecoration: "none",
+    color: theme.palette.primary.main
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -66,19 +57,14 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: 200,
   },
-
   checkbox: {
     color: theme.palette.secondary.dark
   },
-
-  cssLabel: {
-    color: 'green'
-  },
-
+  cssLabel: {},
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
       borderColor: `${theme.palette.other.light} !important`,
@@ -87,19 +73,40 @@ const useStyles = makeStyles(theme => ({
       borderColor: `${theme.palette.other.light} !important`,
     },
   },
-
+  close: {
+    padding: theme.spacing(0.5),
+  },
   cssFocused: {},
-
   notchedOutline: {
     borderWidth: '1px',
   },
 }));
 
+const Copyright = () => {
+  const classes = useStyles();
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link href="/" passhref>
+        <a className={ classes.link }>
+          DevContra
+        </a>
+      </Link>{' '}
+      {new Date().getFullYear()}
+    </Typography>
+  );
+}
+
 const SignIn = () => {
-  const user = useContext(UserContext);
+  const { setIsLoggedIn } = useAuthContext();
   const classes = useStyles();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [ snackMessage, setSnackMessage ] = useState("error");
+  const [ snackVariant, setSnackVariant ] = useState("error");
+  const [ snackOpen, setSnackOpen ] = useState(false);
 
   const validateForm = () => {
     return password.length > 0 && email.length > 0;
@@ -108,19 +115,37 @@ const SignIn = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      console.log(user);
       await Auth.signIn(email, password);
-      await user.setIsLoggedIn(true);
-      console.log("logged in")
-      console.log(await user);
+      setIsLoggedIn(true);
+      setEmailError(false) && setPasswordError(false);
+      setSnackMessage("Successfully logged in");
+      setSnackVariant("success");
+      setSnackOpen(true);
     } catch (e) {
-      console.log(Auth);
       console.log("Error", e);
+      if (e.code === "UserNotFoundException") { 
+        setEmailError(true)
+        setPasswordError(false);
+        setSnackMessage(e.message);
+        setSnackVariant("error");
+        return setSnackOpen(true);
+      }
+      if (e.code === "NotAuthorizedException") {
+        setPasswordError(true);
+        setEmailError(false);
+        setSnackMessage("Invalid Password, please try again");
+        setSnackVariant("error");
+        return setSnackOpen(true);
+      }
+      setSnackMessage(e.code);
+      setSnackVariant("error");
+      setSnackOpen(true);
     }
   }
 
   useEffect(() => {
-    console.log(user);
+    if (email.length === 0) setEmailError(false);
+    if (password.length === 0) setPasswordError(false);
   });
 
   return (
@@ -135,6 +160,7 @@ const SignIn = () => {
         </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
+              error={emailError}
               InputLabelProps={{
                 classes: {
                   root: classes.field,
@@ -160,6 +186,7 @@ const SignIn = () => {
               onChange={e => setEmail(e.target.value)}
             />
             <TextField
+              error={passwordError}
               className={classes.field}
               variant="outlined"
               margin="normal"
@@ -189,13 +216,17 @@ const SignIn = () => {
           </Button>
             <Grid container>
               <Grid item xs>
-                <Link className={classes.link} href="#" variant="body2">
-                  Forgot password?
+                <Link href="#" variant="body2" passhref>
+                  <a className={ classes.link }>
+                    Forgot password?
+                  </a>
               </Link>
               </Grid>
               <Grid item>
-                <Link className={classes.link} href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/signup" variant="body2" passhref>
+                  <a className={classes.link} >
+                    {"Don't have an account? Sign Up"}
+                  </a>
                 </Link>
               </Grid>
             </Grid>
@@ -204,6 +235,12 @@ const SignIn = () => {
         <Box mt={8}>
           <Copyright />
         </Box>
+        <CustomizedSnackbars 
+          message={snackMessage} 
+          variant={snackVariant} 
+          open={snackOpen} 
+          setOpen={setSnackOpen} 
+        />
       </Container>
     </Layout>
   );
