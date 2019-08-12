@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
   link: {
     textDecoration: "none",
     color: "inherit"
+  },
+  accountIcon: {
+    color: theme.palette.paper.main
   }
 }));
 
@@ -73,7 +76,7 @@ const DefaultAppBar = () => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                <AccountCircle className={classes.accountIcon} />
               </IconButton>
               <Menu
                 id="menu-appbar"
