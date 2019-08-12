@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useAuthContext } from "../context/user-context";
 import Layout from '../components/Layout';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
+import Router from 'next/router';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -33,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       color: theme.palette.primary.dark,
     },
+    cursor: 'pointer'
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -96,7 +98,6 @@ const useStyles = makeStyles(theme => ({
   strong: {
     color: green[600]
   }
-
 }));
 
 const Copyright = () => {
@@ -122,13 +123,20 @@ const Signup = () => {
   const [confirmationCode, setConfirmationCode] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [confirmationError, setConfirmationError] = useState(false);
   const [snackMessage, setSnackMessage] = useState("error");
   const [snackVariant, setSnackVariant] = useState("error");
   const [snackOpen, setSnackOpen] = useState(false);
   const [newUser, setNewUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState("weak");
+  const [loading, setLoading] = useState(false);
+  const [loadingSuccess, setLoadingSuccess] = React.useState(false);
+  const { setIsLoggedIn } = useAuthContext();
+
+  const buttonClassname = clsx({
+    [classes.buttonSuccess]: loadingSuccess,
+  });
 
   const validateForm = () => {
     return password.length > 0 && email.length > 0 && confirmPassword === password;
@@ -139,51 +147,93 @@ const Signup = () => {
   }
 
   const validatePasswordStrength = (value) => {
-    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-    const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+    const strongRegex = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9])(?=\S*?[.^$*[\]{}()-?\"!@#]).{12,})\S$/g
+    const mediumRegex = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,})\S$/g
+    const mediumLongRegex = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{12,})\S$/g
 
     if (strongRegex.test(value)) return setPasswordStrength("strong");
-    if (mediumRegex.test(value) && value.length > 12) return setPasswordStrength("strong");
+    if (mediumLongRegex.test(value)) return setPasswordStrength("strong");
     if (mediumRegex.test(value)) return setPasswordStrength("medium");
-    
+
     return setPasswordStrength("weak");
   }
 
   const handlePasswordChange = e => {
     setPassword(e.target.value);
     validatePasswordStrength(e.target.value);
-  } 
+  }
 
   const handleSubmit = async e => {
     e.preventDefault();
 
-    setIsLoading(true);
-    setNewUser("test");
-    setIsLoading(false);
+    console.log(passwordStrength)
+
+    if (passwordStrength === "weak") {
+      setPasswordError(true);
+      setSnackMessage("Password must contain at least 8 characters, including uppercase and numbers");
+      setSnackVariant("error");
+      return setSnackOpen(true);
+    }
+
+    setLoading(true);
+    try {
+      const newUser = await Auth.signUp({
+        username: email,
+        password: password
+      });
+      setNewUser(newUser);
+      setLoading(false);
+      setSnackMessage("Confirmation email sent");
+      setSnackVariant("warning");
+      setSnackOpen(true);
+    } catch (e) {
+      console.log(e);
+      setSnackMessage(e.message);
+      setSnackVariant("error");
+      setSnackOpen(true);
+    }
   }
 
   const handleConfirmationSubmit = async e => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
+    try {
+      await Auth.confirmSignUp(email, confirmationCode);
+      await Auth.signIn(email, password);  
+      setIsLoggedIn(true);
+      setSnackMessage("Email confirmed");
+      setSnackVariant("success");
+      setSnackOpen(true);
+      Router.push('/')
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+      setConfirmationError(true);
+      setSnackMessage(e.message);
+      setSnackVariant("error");
+      setSnackOpen(true);
+    }
+    setLoading(true);
   }
 
   useEffect(() => {
     if (email.length === 0) setEmailError(false);
     if (password.length === 0) setPasswordError(false);
+    if (confirmationCode.length === 0) setConfirmationError(false);
   });
 
-  const inputAdornment = isSelected 
-    ? { 
-        startAdornment: (
-          <InputAdornment position="start">
-            <BorderClear className={clsx(classes[passwordStrength])} />
-          </InputAdornment>
-        ),
-      } 
+  const inputAdornment = isSelected
+    ? {
+      startAdornment: (
+        <InputAdornment position="start">
+          <BorderClear className={clsx(classes[passwordStrength])} />
+        </InputAdornment>
+      ),
+    }
     : {}
 
-  return (
-    <Layout>
+  const renderForm = () => {
+    return (
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -194,20 +244,8 @@ const Signup = () => {
         </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <TextField
+              autoFocus
               error={emailError}
-              InputLabelProps={{
-                classes: {
-                  root: classes.field,
-                },
-              }}
-              InputProps={{
-                classes: {
-                  root: classes.cssOutlinedInput,
-                  focused: classes.cssFocused,
-                  notchedOutline: classes.notchedOutline,
-                },
-                inputMode: "numeric"
-              }}
               variant="outlined"
               margin="normal"
               required
@@ -235,15 +273,14 @@ const Signup = () => {
               onChange={handlePasswordChange}
             />
             <TextField
-              error={passwordError}
               className={classes.field}
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              name="confirm password"
+              name="confirmPassword"
               label="Confirm Password"
-              type="confirm"
+              type="password"
               id="confirmPassword"
               onChange={e => setConfirmPassword(e.target.value)}
             />
@@ -258,6 +295,11 @@ const Signup = () => {
               Sign Up
           </Button>
             <Grid container>
+            <Grid item xs>
+                <span onClick={e => setNewUser("returning")} className={ classes.link }>
+                  Have a code?
+                </span>
+              </Grid>
               <Grid item>
                 <Link href="/" variant="body2" passhref>
                   <a className={classes.link} >
@@ -278,8 +320,81 @@ const Signup = () => {
           setOpen={setSnackOpen}
         />
       </Container>
-    </Layout>
-  );
+    )
+  }
+
+  const renderConfirmationForm = () => {
+    return (
+      <Container component="main" maxWidth="xs">
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <AccountCircle fontSize="large" />
+          </Avatar>
+          <Typography component="h1" variant="h5" className={classes.header}>
+            Verify your email
+        </Typography>
+          <form className={classes.form} noValidate onSubmit={handleConfirmationSubmit}>
+            {newUser==="returning" && 
+              <TextField
+              autoFocus
+              error={emailError}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              onChange={e => setEmail(e.target.value)}
+            />
+            }
+            <TextField
+             key="Confirmation Code"
+             error={confirmationError}
+             variant="outlined"
+             margin="normal"
+             required
+             fullWidth
+             id="email"
+             label="Confirmation Code"
+             name="email"
+             onChange={e => setConfirmationCode(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={!validateConfirmationForm() || loading}
+            >
+              Confirm
+          </Button>
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+        <CustomizedSnackbars
+          message={snackMessage}
+          variant={snackVariant}
+          open={snackOpen}
+          setOpen={setSnackOpen}
+        />
+      </Container>
+    )
+  }
+
+  return (
+    <Layout >
+      {newUser === null
+        ? renderForm()
+        : renderConfirmationForm()}
+    </Layout >
+  )
 }
+
+
 
 export default Signup;
