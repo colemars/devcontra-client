@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Build from '@material-ui/icons/Build';
 import { Auth } from 'aws-amplify';
-// import Link from '@material-ui/core/Link';
 import Link from 'next/link';
 import { useAuthContext } from "../context/user-context";
 import Layout from '../components/Layout';
@@ -28,7 +27,10 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     textDecoration: "none",
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
+    '&:hover': {
+      color: theme.palette.primary.dark,
+    },
   },
   paper: {
     marginTop: theme.spacing(8),
