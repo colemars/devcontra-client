@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import { UserProvider } from '../context/user-context';
+import React from 'react';
+import { useAuthContext } from "../context/user-context";
 
 const WithAuth = ({ children }) => {
-  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-
   return (
-    <UserProvider value={{ isLoggedIn, setIsLoggedIn }}>
+    <useAuthContext.Provider>
       {children}
-    </UserProvider>
+    </useAuthContext.Provider>
   )
 };
 

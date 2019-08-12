@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react';
+import createUseContext from "constate"; // State Context Object Creator
 
-const UserContext = React.createContext({})
+const useAuth = () => {
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  return { isLoggedIn, setIsLoggedIn };
+}
 
-export const UserProvider = UserContext.Provider
-export const UserConsumer = UserContext.Consumer
-export default UserContext
+export const useAuthContext = createUseContext(useAuth);
