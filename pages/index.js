@@ -2,13 +2,15 @@ import React from 'react';
 import { useAuthContext } from "../context/user-context";
 import Layout from '../components/Layout';
 import SignIn from './signin';
+import Configure from './configure';
 
 const Index = () => {
-  const { isLoggedin } = useAuthContext();
+  const { isLoggedIn } = useAuthContext();
 
   return (
     <Layout>
-      {!isLoggedin && <SignIn />}
+      {!isLoggedIn && <SignIn />}
+      {isLoggedIn && <Configure />}
     </Layout>
   );
 }
