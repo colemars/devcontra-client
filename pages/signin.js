@@ -88,7 +88,7 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link href="/" passhref>
+      <Link href="/" passHref>
         <a className={ classes.link }>
           DevContra
         </a>
@@ -216,14 +216,14 @@ const SignIn = () => {
           </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2" passhref>
+                <Link href="#" passHref>
                   <a className={ classes.link }>
                     Forgot password?
                   </a>
               </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2" passhref>
+                <Link href="/signup" passHref>
                   <a className={classes.link} >
                     {"Don't have an account? Sign Up"}
                   </a>
