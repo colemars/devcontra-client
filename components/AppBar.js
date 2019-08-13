@@ -56,7 +56,7 @@ const DefaultAppBar = () => {
       <AppBar position="static" color="default" className={classes.bar}>
         <Toolbar>
           <Typography variant="h5" className={classes.logoName} >
-            <Link href="/" passhref>
+            <Link href="/" passHref>
               <a className={ classes.link }>
                 dev.contra
               </a>
