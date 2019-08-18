@@ -117,7 +117,6 @@ const SignIn = () => {
     e.preventDefault();
     try {
       await Auth.signIn(email, password);
-      setIsLoggedIn(true);
       setEmailError(false) && setPasswordError(false);
       setSnackMessage("Successfully logged in");
       setSnackVariant("success");
