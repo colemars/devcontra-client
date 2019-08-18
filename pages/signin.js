@@ -122,6 +122,7 @@ const SignIn = () => {
       setSnackMessage("Successfully logged in");
       setSnackVariant("success");
       setSnackOpen(true);
+      setIsLoggedIn(true);
     } catch (e) {
       console.log("Error", e);
       if (e.code === "UserNotFoundException") { 
