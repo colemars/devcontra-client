@@ -4,3 +4,4 @@ public/_next/
 src/functions/pages
 .next
 build/
+.vscode/
