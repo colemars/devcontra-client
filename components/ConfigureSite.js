@@ -136,13 +136,20 @@ const ConfigureSite = (props) => {
       handleAnimate(false);
     }
   }, [status]); // Only re-run the effect if status changes
+  const handleAnimate = bool => {
+    if (status === loading) {
+      setRotate(true);
+      setAnimate("infinite");
+      return
+    }
     if (!bool) {
       setAnimate(false);
-      setTimeout(function(){ setRotate(false); }, 1);
+      setTimeout(function(){ setRotate(false); }, 50);
       return;
     }
     setRotate(true);
     setTimeout(function(){ setAnimate("infinite"); }, 500);
+  };
   }
 
   return (
@@ -170,7 +177,7 @@ const ConfigureSite = (props) => {
               ...defaultStyle,
               ...transitionStyles[state]
             }}
-            className={clsx(`${variant}-data`, classes.dataIcon)}
+              className={clsx(`${variant}-data`, classes[status], classes.dataIcon)}
             fontSize={'default'}
             >
             </DataUsage>
@@ -183,9 +190,9 @@ const ConfigureSite = (props) => {
           @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
           
           .${variant}-data {
-            -webkit-animation:spin 4s linear ${animate};
-            -moz-animation:spin 4s linear ${animate};
-            animation:spin 4s linear ${animate};
+              -webkit-animation:spin ${rotateTime}s linear ${animate};
+              -moz-animation:spin ${rotateTime}s linear ${animate};
+              animation:spin ${rotateTime}s linear ${animate};
           }
         }
       `}</style>
