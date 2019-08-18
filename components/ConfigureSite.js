@@ -193,19 +193,19 @@ const ConfigureSite = (props) => {
 
   return (
     <Fragment>
-    <Grid container item xs={12} spacing={3}>
-      <Grid item xs={3}>
-        <div className={clsx(classes[variant], classes.logo)}>
-          <img src={src} className={classes.markerIcon} />
-        </div>
-      </Grid>
-      <Grid item xs={7}>
-        <TextField
-          id={`${variant}-input`}
-          label={label}
-          className={classes.textField}
-          margin="normal"
-          variant="outlined"
+      <Grid container item xs={12} spacing={3}>
+        <Grid item xs={3}>
+          <div className={clsx(classes[variant], classes.logo)}>
+            <img src={src} className={classes.markerIcon} />
+          </div>
+        </Grid>
+        <Grid item xs={7}>
+          <TextField
+            id={`${variant}-input`}
+            label={label}
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
             onFocus={e => setStatus(pending)}
             onBlur={e => setStatus(waiting)}
             onPaste={handlePaste}
@@ -213,36 +213,36 @@ const ConfigureSite = (props) => {
             value={url}
             placeholder={"Paste url"}
             disabled={isLoading || confirmed || unavailable}
-        />
-      </Grid>
-      <Grid item xs={1}>
-        <Transition in={rotate} timeout={duration}>
-          {state => (
-            <DataUsage style={{
-              ...defaultStyle,
-              ...transitionStyles[state]
-            }}
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Transition in={rotate} timeout={duration}>
+            {state => (
+              <DataUsage style={{
+                ...defaultStyle,
+                ...transitionStyles[state]
+              }}
               className={clsx(`${variant}-data`, classes[status], classes.dataIcon)}
-            fontSize={'default'}
-            >
-            </DataUsage>
-          )}
-        </Transition>
-        {/* <DataUsage fontSize="medium" className={`${variant}-data`} style={{}} key={variant} /> */}
-        <style jsx global>{`
-          @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-          @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-          @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-          
-          .${variant}-data {
+              fontSize={'default'}
+              >
+              </DataUsage>
+            )}
+          </Transition>
+          {/* <DataUsage fontSize="medium" className={`${variant}-data`} style={{}} key={variant} /> */}
+          <style jsx global>{`
+            @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+            @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+            @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+            
+            .${variant}-data {
               -webkit-animation:spin ${rotateTime}s linear ${animate};
               -moz-animation:spin ${rotateTime}s linear ${animate};
               animation:spin ${rotateTime}s linear ${animate};
+            }
           }
-        }
-      `}</style>
+        `}</style>
+        </Grid>
       </Grid>
-    </Grid>
       <CustomizedSnackbars 
         message={snackMessage}
         variant={snackVariant}
