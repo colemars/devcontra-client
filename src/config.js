@@ -1,4 +1,5 @@
 const dev = {
+  stage: 'dev',
   apiGateway: {
     REGION: 'us-west-2',
     URL: 'https://contra-api.colemars.dev/dev',
@@ -12,6 +13,7 @@ const dev = {
 };
 
 const prod = {
+  stage: 'prod',
   apiGateway: {
     REGION: 'us-west-2',
     URL: 'https://contra-api.colemars.dev/prod',
@@ -26,9 +28,7 @@ const prod = {
 
 // Default to dev if not set
 const config = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod : dev;
-
 console.log(config);
-// eslint-disable-next-line no-undef
 const { NOW_GITHUB_COMMIT_REF } = process.env;
 console.log(NOW_GITHUB_COMMIT_REF);
 console.log(process.env);
