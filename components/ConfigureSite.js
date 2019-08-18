@@ -66,6 +66,8 @@ const ConfigureSite = (props) => {
   const [ snackMessage, setSnackMessage ] = useState("error");
   const [ snackVariant, setSnackVariant ] = useState("error");
   const [ snackOpen, setSnackOpen ] = useState(false);
+  const unavailableList = ["spectrum", "twitter", "github"]
+  const [ unavailable ] = useState(unavailableList.includes(variant));
 
   const handleAnimate = (bool) => {
     if (!bool) {

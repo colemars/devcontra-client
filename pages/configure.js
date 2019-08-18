@@ -65,10 +65,10 @@ export default function Configure() {
               <Paper className={classes.paper}>
                 <form className={classes.container} noValidate autoComplete="off">
                   <Grid container spacing={3}>
-                    <ConfigureSite src={"/static/stack.png"} variant={"stack"} label={"StackOverflow URL"} key={v4()} />
-                    <ConfigureSite src={"/static/github.png"} variant={"github"} label={"Github URL"} />
-                    <ConfigureSite src={"/static/spectrum.png"} variant={"spectrum"} label={"Spectrum URL"} />
-                    <ConfigureSite src={"/static/twitter.png"} variant={"twitter"} label={"Twitter URL"} />
+                    <ConfigureSite src={"/static/stack.png"} variant={"stackoverflow"} label={"StackOverflow URL"} />
+                    <ConfigureSite src={"/static/github.png"} variant={"github"} label={"Github URL (coming soon)"} />
+                    <ConfigureSite src={"/static/spectrum.png"} variant={"spectrum"} label={"Spectrum URL (coming soon"} />
+                    <ConfigureSite src={"/static/twitter.png"} variant={"twitter"} label={"Twitter URL (coming soon"} />
                   </Grid>
                 </form>
               </Paper>
