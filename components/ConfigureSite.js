@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
@@ -53,23 +53,69 @@ const useStyles = makeStyles(theme => ({
     marginTop: "1.2em"
   },
   dataIcon: {
-    marginTop: "1.2em",
-    // color: green[600]
+    marginTop: "1.2em"
+  },
+  pending: {
+    color: theme.palette.primary.main
+  },
+  loading: {
+    color: amber[500]
+  },
+  success: {
+    color: green[600]
+  },
+  invalid: {
+    color: theme.palette.error.main
+  },
+  waiting: {
+    color: theme.palette.primary.main
   }
 }));
 
 const ConfigureSite = (props) => {
+  const pending = "pending";
+  const success = "success";
+  const invalid = "invalid";
+  const waiting = "waiting";
+  const loading = "loading";
   const classes = useStyles();
   const { src, variant, label } = props;
   const [rotate, setRotate] = useState();
   const [ animate, setAnimate ] = useState();
+  const [ url, setUrl ] = useState('');
+  const [ status, setStatus ] = useState(waiting);
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ confirmed, setConfirmed ] = useState(false);
+  const [ rotateTime, setRotateTime ] = useState();
   const [ snackMessage, setSnackMessage ] = useState("error");
   const [ snackVariant, setSnackVariant ] = useState("error");
   const [ snackOpen, setSnackOpen ] = useState(false);
   const unavailableList = ["spectrum", "twitter", "github"]
   const [ unavailable ] = useState(unavailableList.includes(variant));
 
-  const handleAnimate = (bool) => {
+  useEffect(() => {
+    if (status === success) {
+      setIsLoading(false);
+      handleAnimate(false);
+      setConfirmed(true);
+    }
+    if (status === loading) {
+      setIsLoading(true);
+      setRotateTime(1);
+      handleAnimate(true);
+    }
+    if (status === pending) {
+      setRotateTime(4);
+      handleAnimate(true);
+    }
+    if (status === waiting) {
+      handleAnimate(false);
+    }
+    if (status === invalid) {
+      setIsLoading(false);
+      handleAnimate(false);
+    }
+  }, [status]); // Only re-run the effect if status changes
     if (!bool) {
       setAnimate(false);
       setTimeout(function(){ setRotate(false); }, 1);
