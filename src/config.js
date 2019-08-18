@@ -1,8 +1,4 @@
 const dev = {
-  s3: {
-    REGION: 'us-west-2',
-    BUCKET: 'devcontra-api-dev-attachmentsbucket-sse4szutsuon',
-  },
   apiGateway: {
     REGION: 'us-west-2',
     URL: 'https://contra-api.colemars.dev/dev',
@@ -16,17 +12,15 @@ const dev = {
 };
 
 const prod = {
-  s3: {
-    REGION: 'us-west-2',
-    BUCKET: 'stampsafe-2-api-prod-attachmentsbucket-1a7s34i2ixcbe',
-  },
   apiGateway: {
     REGION: 'us-west-2',
-    URL: 'https://api.colemars.dev/prod',
+    URL: 'https://contra-api.colemars.dev/dev',
   },
   cognito: {
     REGION: 'us-west-2',
-    IDENTITY_POOL_ID: 'us-west-2:52cd66b1-0252-4fe8-8cd7-929bf4bb1f37',
+    USER_POOL_ID: 'us-west-2_Rym6GAUMG',
+    APP_CLIENT_ID: '6b88c9q4vqrl64t7bq99f73abu',
+    IDENTITY_POOL_ID: 'us-west-2:310191c5-8c8e-4817-8894-834e8cec57db',
   },
 };
 
