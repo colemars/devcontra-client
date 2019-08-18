@@ -25,7 +25,10 @@ const prod = {
 };
 
 // Default to dev if not set
-const config = process.env.REACT_APP_STAGE === 'prod' ? prod : dev;
+const config = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod : dev;
+
+console.log(config);
+console.log(process.env.NOW_GITHUB_COMMIT_REF);
 
 export default {
   // Add common config values here
