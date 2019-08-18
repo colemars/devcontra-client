@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: "40%",
     marginTop: ".2em"
   },
-  stack: {
+  stackoverflow: {
     backgroundColor: "#F48024",
   },
   spectrum: {
