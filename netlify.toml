@@ -1,6 +1,6 @@
 [build]
   base    = ""
-  publish="out/"
+  publish=".next/"
   command = "REACT_APP_STAGE=dev npm run build"
 
 [context.production]
