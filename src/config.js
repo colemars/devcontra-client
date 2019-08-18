@@ -28,7 +28,8 @@ const prod = {
 const config = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod : dev;
 
 console.log(config);
-console.log(process.env);
+// eslint-disable-next-line no-undef
+console.log(NOW_GITHUB_COMMIT_REF);
 
 export default {
   // Add common config values here

@@ -1,5 +1,0 @@
-{
-  "env": {
-    "BRANCH": "@NOW_GITHUB_COMMIT_REF"
-  }
-}
