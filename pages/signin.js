@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import Build from '@material-ui/icons/Build';
 import { Auth } from 'aws-amplify';
 import Link from 'next/link';
-import { useAuthContext } from "../context/user-context";
+import { useAuthContext } from '../context/user-context';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
@@ -22,10 +22,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   header: {
-    color: theme.palette.paper.main
+    color: theme.palette.paper.main,
   },
   link: {
-    textDecoration: "none",
+    textDecoration: 'none',
     color: theme.palette.primary.main,
     '&:hover': {
       color: theme.palette.primary.dark,
@@ -36,22 +36,22 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    color: theme.palette.paper.main
+    color: theme.palette.paper.main,
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    color: theme.palette.paper.main
+    color: theme.palette.paper.main,
   },
   field: {
-    borderColor: "yellow !important"
+    borderColor: 'yellow !important',
   },
   container: {
     display: 'flex',
@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     width: 200,
   },
   checkbox: {
-    color: theme.palette.secondary.dark
+    color: theme.palette.secondary.dark,
   },
   cssLabel: {},
   cssOutlinedInput: {
@@ -89,60 +89,60 @@ const Copyright = () => {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link href="/" passHref>
-        <a className={ classes.link }>
-          DevContra
-        </a>
+        <a className={classes.link}>DevContra</a>
       </Link>{' '}
       {new Date().getFullYear()}
     </Typography>
   );
-}
+};
 
 const SignIn = () => {
   const { setIsLoggedIn } = useAuthContext();
   const classes = useStyles();
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [ snackMessage, setSnackMessage ] = useState("error");
-  const [ snackVariant, setSnackVariant ] = useState("error");
-  const [ snackOpen, setSnackOpen ] = useState(false);
+  const [snackMessage, setSnackMessage] = useState('error');
+  const [snackVariant, setSnackVariant] = useState('error');
+  const [snackOpen, setSnackOpen] = useState(false);
 
   const validateForm = () => {
     return password.length > 0 && email.length > 0;
-  }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
       await Auth.signIn(email, password);
-      setEmailError(false) && setPasswordError(false);
-      setSnackMessage("Successfully logged in");
-      setSnackVariant("success");
+      setEmailError(false);
+      setPasswordError(false);
+      setSnackMessage('Successfully logged in');
+      setSnackVariant('success');
       setSnackOpen(true);
       setIsLoggedIn(true);
-    } catch (e) {
-      console.log("Error", e);
-      if (e.code === "UserNotFoundException") { 
-        setEmailError(true)
+    } catch (err) {
+      if (err.code === 'UserNotFoundException') {
+        setEmailError(true);
         setPasswordError(false);
-        setSnackMessage(e.message);
-        setSnackVariant("error");
-        return setSnackOpen(true);
+        setSnackMessage(err.message);
+        setSnackVariant('error');
+        setSnackOpen(true);
+        return;
       }
-      if (e.code === "NotAuthorizedException") {
+      if (e.code === 'NotAuthorizedException') {
         setPasswordError(true);
         setEmailError(false);
-        setSnackMessage("Invalid Password, please try again");
-        setSnackVariant("error");
-        return setSnackOpen(true);
+        setSnackMessage('Invalid Password, please try again');
+        setSnackVariant('error');
+        setSnackOpen(true);
+        return;
       }
       setSnackMessage(e.code);
-      setSnackVariant("error");
+      setSnackVariant('error');
       setSnackOpen(true);
     }
-  }
+  };
 
   useEffect(() => {
     if (email.length === 0) setEmailError(false);
@@ -150,99 +150,97 @@ const SignIn = () => {
   });
 
   return (
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <Build />
-          </Avatar>
-          <Typography component="h1" variant="h5" className={classes.header}>
-            Sign in
+    <Container component="main" maxWidth="xs">
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <Build />
+        </Avatar>
+        <Typography component="h1" variant="h5" className={classes.header}>
+          Sign in
         </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <TextField
-              error={emailError}
-              InputLabelProps={{
-                classes: {
-                  root: classes.field,
-                },
-              }}
-              InputProps={{
-                classes: {
-                  root: classes.cssOutlinedInput,
-                  focused: classes.cssFocused,
-                  notchedOutline: classes.notchedOutline,
-                },
-                inputMode: "numeric"
-              }}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={e => setEmail(e.target.value)}
-            />
-            <TextField
-              error={passwordError}
-              className={classes.field}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={e => setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              className={classes.formControlLabel}
-              control={<Checkbox value="remember" className={classes.checkbox} />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              disabled={!validateForm()}
-            >
-              Sign In
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+          <TextField
+            error={emailError}
+            InputLabelProps={{
+              classes: {
+                root: classes.field,
+              },
+            }}
+            InputProps={{
+              classes: {
+                root: classes.cssOutlinedInput,
+                focused: classes.cssFocused,
+                notchedOutline: classes.notchedOutline,
+              },
+              inputMode: 'numeric',
+            }}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={e => setEmail(e.target.value)}
+          />
+          <TextField
+            error={passwordError}
+            className={classes.field}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={e => setPassword(e.target.value)}
+          />
+          <FormControlLabel
+            className={classes.formControlLabel}
+            control={<Checkbox value="remember" className={classes.checkbox} />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            disabled={!validateForm()}
+          >
+            Sign In
           </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" passHref>
-                  <a className={ classes.link }>
-                    Forgot password?
-                  </a>
+          <Grid container>
+            <Grid item xs>
+              <Link href="/" passHref>
+                <a className={classes.link}>Forgot password?</a>
               </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" passHref>
-                  <a className={classes.link} >
-                    {"Don't have an account? Sign Up"}
-                  </a>
-                </Link>
-              </Grid>
             </Grid>
-          </form>
-        </div>
-        <Box mt={8}>
-          <Copyright />
-        </Box>
-        <CustomizedSnackbars 
-          message={snackMessage} 
-          variant={snackVariant} 
-          open={snackOpen} 
-          setOpen={setSnackOpen} 
-        />
-      </Container>
+            <Grid item>
+              <Link href="/signup" passHref>
+                <a className={classes.link}>
+                  {"Don't have an account? Sign Up"}
+                </a>
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+      <CustomizedSnackbars
+        message={snackMessage}
+        variant={snackVariant}
+        open={snackOpen}
+        setOpen={setSnackOpen}
+      />
+    </Container>
   );
-}
+};
 
 export default SignIn;

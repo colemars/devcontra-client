@@ -45,9 +45,9 @@ const useStyles1 = makeStyles(theme => ({
   },
 }));
 
-const MySnackbarContentWrapper = (props) => {
+const MySnackbarContentWrapper = props => {
   const classes = useStyles1();
-  const { className, message, onClose, variant, ...other } = props;
+  const { className, message, onClose, variant } = props;
   const Icon = variantIcon[variant];
 
   return (
@@ -61,19 +61,23 @@ const MySnackbarContentWrapper = (props) => {
         </span>
       }
       action={[
-        <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+        <IconButton
+          key="close"
+          aria-label="close"
+          color="inherit"
+          onClick={onClose}
+        >
           <CloseIcon className={classes.icon} />
         </IconButton>,
       ]}
-      {...other}
     />
   );
-}
+};
 
 MySnackbarContentWrapper.propTypes = {
-  className: PropTypes.string,
-  message: PropTypes.string,
-  onClose: PropTypes.func,
+  className: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
   variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
 };
 
@@ -83,8 +87,8 @@ const useStyles2 = makeStyles(theme => ({
   },
 }));
 
-const CustomizedSnackbars = (props) => {
-  const classes = useStyles2(); 
+const CustomizedSnackbars = props => {
+  const classes = useStyles2();
   const { message, variant, open, setOpen } = props;
 
   function handleClose(event, reason) {
@@ -113,6 +117,13 @@ const CustomizedSnackbars = (props) => {
       />
     </Snackbar>
   );
-}
+};
+
+CustomizedSnackbars.propTypes = {
+  open: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
+};
 
 export default CustomizedSnackbars;

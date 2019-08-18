@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Link from 'next/link';
-import { useAuthContext } from "../context/user-context";
+import { useAuthContext } from '../context/user-context';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   logoName: {
     color: theme.palette.paper.main,
     marginRight: theme.spacing(2),
-    flexGrow: 1
+    flexGrow: 1,
   },
   bar: {
     backgroundColor: theme.palette.primary.main,
@@ -26,15 +26,15 @@ const useStyles = makeStyles(theme => ({
   },
   demo: {
     right: '2',
-    color: theme.palette.paper.main
+    color: theme.palette.paper.main,
   },
   link: {
-    textDecoration: "none",
-    color: "inherit"
+    textDecoration: 'none',
+    color: 'inherit',
   },
   accountIcon: {
-    color: theme.palette.paper.main
-  }
+    color: theme.palette.paper.main,
+  },
 }));
 
 const DefaultAppBar = () => {
@@ -55,19 +55,17 @@ const DefaultAppBar = () => {
     <div className={classes.root}>
       <AppBar position="static" color="default" className={classes.bar}>
         <Toolbar>
-          <Typography variant="h5" className={classes.logoName} >
+          <Typography variant="h5" className={classes.logoName}>
             <Link href="/" passHref>
-              <a className={ classes.link }>
-                dev.contra
-              </a>
+              <a className={classes.link}>dev.contra</a>
             </Link>
           </Typography>
           <Button color="inherit" edge="end">
-            <Typography variant="h5" className={classes.demo} >
+            <Typography variant="h5" className={classes.demo}>
               demo
             </Typography>
           </Button>
-            {isLoggedIn && (
+          {isLoggedIn && (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -96,12 +94,12 @@ const DefaultAppBar = () => {
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
-              </div>
-              )}
+            </div>
+          )}
         </Toolbar>
       </AppBar>
     </div>
   );
-}
+};
 
 export default DefaultAppBar;

@@ -12,17 +12,17 @@ const theme = createMuiTheme({
     },
     other: {
       main: '#1D2A33',
-      dark: '#223340'
+      dark: '#223340',
     },
     paper: {
-      main: '#fff'
+      main: '#fff',
     },
     error: {
       main: red.A400,
     },
     background: {
       default: '#314759',
-      light: '#385368'
+      light: '#385368',
     },
   },
 });

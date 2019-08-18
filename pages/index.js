@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthContext } from "../context/user-context";
+import { useAuthContext } from '../context/user-context';
 import Layout from '../components/Layout';
 import SignIn from './signin';
 import Configure from './configure';
@@ -13,6 +13,6 @@ const Index = () => {
       {isLoggedIn && <Configure />}
     </Layout>
   );
-}
+};
 
 export default Index;
