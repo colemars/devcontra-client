@@ -14,7 +14,7 @@ const dev = {
 const prod = {
   apiGateway: {
     REGION: 'us-west-2',
-    URL: 'https://contra-api.colemars.dev/dev',
+    URL: 'https://contra-api.colemars.dev/prod',
   },
   cognito: {
     REGION: 'us-west-2',
