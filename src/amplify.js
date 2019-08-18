@@ -18,7 +18,7 @@ export default async function configureAmplify() {
     API: {
       endpoints: [
         {
-          name: 'profile',
+          name: 'contra',
           endpoint: config.apiGateway.URL,
           region: config.apiGateway.REGION
         }
