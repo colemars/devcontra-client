@@ -136,6 +136,16 @@ const ConfigureSite = (props) => {
       handleAnimate(false);
     }
   }, [status]); // Only re-run the effect if status changes
+
+  const handleDelete = e => {
+    const key = event.keyCode || event.charCode;
+    const deleteKeyCode = 46;
+    const backspaceKeyCode = 8;
+    if (key === backspaceKeyCode || key === deleteKeyCode) {
+      setUrl('')
+    }
+  }
+
   const handleAnimate = bool => {
     if (status === loading) {
       setRotate(true);
@@ -150,6 +160,33 @@ const ConfigureSite = (props) => {
     setRotate(true);
     setTimeout(function(){ setAnimate("infinite"); }, 500);
   };
+
+  const handlePaste = async e => {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const urlString = clipboardData.getData('Text');
+    setUrl(urlString)
+
+    if (!verifyUrl(urlString)) {
+      setSnackMessage("Invalid Url");
+      setSnackVariant("error");
+      return setSnackOpen(true);
+    }
+  
+    setStatus(loading);
+    const targetUserId = urlString.split("/")[4];
+
+    try {
+      await createProfile(targetUserId, variant);
+      setStatus(success);
+      setSnackMessage(`${variant} profile created`);
+      setSnackVariant("success");
+      setSnackOpen(true);
+    } catch(err) {
+      setStatus(invalid);
+      setSnackMessage("Something went wrong");
+      setSnackVariant("error");
+      setSnackOpen(true);
+    }
   }
 
   return (
@@ -166,8 +203,13 @@ const ConfigureSite = (props) => {
           className={classes.textField}
           margin="normal"
           variant="outlined"
-          onFocus={e => handleAnimate(true)}
-          onBlur={e => handleAnimate(false)}
+            onFocus={e => setStatus(pending)}
+            onBlur={e => setStatus(waiting)}
+            onPaste={handlePaste}
+            onKeyDown={handleDelete}
+            value={url}
+            placeholder={"Paste url"}
+            disabled={isLoading || confirmed || unavailable}
         />
       </Grid>
       <Grid item xs={1}>
