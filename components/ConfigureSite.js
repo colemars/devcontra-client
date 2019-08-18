@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import DataUsage from '@material-ui/icons/DataUsage';
 import { Transition } from 'react-transition-group';
 import { amber, green } from '@material-ui/core/colors';
+import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const duration = 500;
 
@@ -62,6 +63,9 @@ const ConfigureSite = (props) => {
   const { src, variant, label } = props;
   const [rotate, setRotate] = useState();
   const [ animate, setAnimate ] = useState();
+  const [ snackMessage, setSnackMessage ] = useState("error");
+  const [ snackVariant, setSnackVariant ] = useState("error");
+  const [ snackOpen, setSnackOpen ] = useState(false);
 
   const handleAnimate = (bool) => {
     if (!bool) {
@@ -119,6 +123,13 @@ const ConfigureSite = (props) => {
       `}</style>
       </Grid>
     </Grid>
+      <CustomizedSnackbars 
+        message={snackMessage}
+        variant={snackVariant}
+        open={snackOpen}
+        setOpen={setSnackOpen}
+      />
+    </Fragment>
   )
 };
 
