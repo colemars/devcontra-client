@@ -72,6 +72,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const verifyUrl = urlString => {
+ if (urlString.length < 32) return false;
+ return true;
+}
 const ConfigureSite = (props) => {
   const pending = "pending";
   const success = "success";
