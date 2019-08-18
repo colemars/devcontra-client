@@ -76,6 +76,22 @@ const verifyUrl = urlString => {
  if (urlString.length < 32) return false;
  return true;
 }
+
+const createProfile = async (targetUserId, variant) => {
+  const contraPost = fields => {
+    return API.post('contra', '/profile', {
+      body: fields
+    });
+  };
+
+  await contraPost({
+    targetUserId,
+    variant
+  });
+
+  return true;
+}
+
 const ConfigureSite = (props) => {
   const pending = "pending";
   const success = "success";
