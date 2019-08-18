@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next",
-    "build:next": "next build",
-    "build": "yarn build:next && cp -a public/_next/serverless/pages src/functions/ && netlify-lambda build src/functions",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint-fix": "eslint . --ext .js --fix; exit 0",
     "lint": "eslint . --ext .js; exit 0"
   },
@@ -40,7 +40,6 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "i": "^0.3.6",
     "npm": "^6.10.3",
     "prettier": "^1.18.2"
   }
