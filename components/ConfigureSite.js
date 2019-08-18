@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import DataUsage from '@material-ui/icons/DataUsage';
 import { Transition } from 'react-transition-group';
 import { amber, green } from '@material-ui/core/colors';
+import { API } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const duration = 500;
@@ -190,6 +192,7 @@ const ConfigureSite = (props) => {
   }
 
   return (
+    <Fragment>
     <Grid container item xs={12} spacing={3}>
       <Grid item xs={3}>
         <div className={clsx(classes[variant], classes.logo)}>
