@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next",
+    "build:next": "next build",
+    "build": "yarn build:next && cp -a public/_next/serverless/pages src/functions/ && netlify-lambda build src/functions",
     "lint-fix": "eslint . --ext .js --fix; exit 0",
     "lint": "eslint . --ext .js; exit 0"
   },
