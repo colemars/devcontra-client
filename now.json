@@ -3,8 +3,20 @@
   "github": {
     "enabled": true
   },
-  "env": {
-    "TEST_REGION2": "@test-region"
+  "build": {
+    "env": {
+      "DEV_API_GATEWAY_REGION": "@dev-api-gateway-region",
+      "DEV_API_GATEWAY_URL": "@dev-api-gateway-url",
+      "DEV_COGNITO_REGION": "@dev-cognito-region",
+      "DEV_USER_POOL_ID": "@dev-user-pool-id",
+      "DEV_APP_ID": "@dev-app-id",
+      "DEV_IDENTITY_POOL_ID": "@dev-identity-pool-id",
+      "PROD_API_GATEWAY_REGION": "@prod-api-gateway-region",
+      "PROD_API_GATEWAY_URL": "@prod-api-gateway-url",
+      "PROD_COGNITO_REGION": "@prod-cognito-region",
+      "PROD_USER_POOL_ID": "@prod-user-pool-id",
+      "PROD_APP_ID": "@prod-app-id",
+      "PROD_IDENTITY_POOL_ID": "@prod-identity-pool-id"
+    }
   },
-  "alias": "test-master.now.sh"
-}
+  "alias": "prod-devcontra.now.sh"

@@ -147,6 +147,8 @@ const SignIn = () => {
   useEffect(() => {
     if (email.length === 0) setEmailError(false);
     if (password.length === 0) setPasswordError(false);
+    const { TEST_REGION } = process.env;
+    console.log(TEST_REGION, 'here');
   });
 
   return (
