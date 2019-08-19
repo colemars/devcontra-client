@@ -16,7 +16,6 @@ import { Auth } from 'aws-amplify';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useAuthContext } from '../context/user-context';
-import Layout from '../components/Layout';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
@@ -387,11 +386,7 @@ const Signup = () => {
     );
   };
 
-  return (
-    <Layout>
-      {newUser === null ? renderForm() : renderConfirmationForm()}
-    </Layout>
-  );
+  return newUser === null ? renderForm() : renderConfirmationForm();
 };
 
 export default Signup;

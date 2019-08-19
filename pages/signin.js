@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import Build from '@material-ui/icons/Build';
 import { Auth } from 'aws-amplify';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useAuthContext } from '../context/user-context';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
@@ -97,7 +98,7 @@ const Copyright = () => {
 };
 
 const SignIn = () => {
-  const { setIsLoggedIn } = useAuthContext();
+  const { setIsLoggedIn, isLoggedIn } = useAuthContext();
   const classes = useStyles();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -106,6 +107,7 @@ const SignIn = () => {
   const [snackMessage, setSnackMessage] = useState('error');
   const [snackVariant, setSnackVariant] = useState('error');
   const [snackOpen, setSnackOpen] = useState(false);
+  const router = useRouter();
 
   const validateForm = () => {
     return password.length > 0 && email.length > 0;
@@ -130,7 +132,7 @@ const SignIn = () => {
         setSnackOpen(true);
         return;
       }
-      if (e.code === 'NotAuthorizedException') {
+      if (err.code === 'NotAuthorizedException') {
         setPasswordError(true);
         setEmailError(false);
         setSnackMessage('Invalid Password, please try again');
@@ -138,7 +140,7 @@ const SignIn = () => {
         setSnackOpen(true);
         return;
       }
-      setSnackMessage(e.code);
+      setSnackMessage(err.code);
       setSnackVariant('error');
       setSnackOpen(true);
     }
@@ -146,10 +148,17 @@ const SignIn = () => {
 
   useEffect(() => {
     if (email.length === 0) setEmailError(false);
+  }, [email]);
+
+  useEffect(() => {
     if (password.length === 0) setPasswordError(false);
-    const { TEST_REGION } = process.env;
-    console.log(TEST_REGION, 'here');
-  });
+  }, [password]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push('/configure');
+    }
+  }, [isLoggedIn]);
 
   return (
     <Container component="main" maxWidth="xs">
