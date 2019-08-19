@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "github": {
+    "enabled": true
+  },
+  "env": {
+    "TEST_REGION": "@test-region"
+  },
+  "alias": "test-master.now.sh"
+}
