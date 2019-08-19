@@ -1,5 +1,6 @@
 const dev = {
   test: process.env.TEST_REGION,
+  all: process.env,
   stage: 'dev',
   apiGateway: {
     REGION: 'us-west-2',
@@ -27,8 +28,7 @@ const prod = {
   },
 };
 
-const { TEST_REGION } = process.env;
-console.log(TEST_REGION, 'here');
+console.log(process.env, 'here');
 
 // diff diff diff
 // diff diff diff
