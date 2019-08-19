@@ -4,7 +4,7 @@
     "enabled": true
   },
   "env": {
-    "TEST_REGION": "@test-region2"
+    "TEST_REGION2": "@test-region"
   },
   "alias": "test-master.now.sh"
 }
