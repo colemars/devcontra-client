@@ -1,37 +1,45 @@
+const {
+  DEV_API_GATEWAY_REGION,
+  DEV_API_GATEWAY_URL,
+  DEV_COGNITO_REGION,
+  DEV_USER_POOL_ID,
+  DEV_APP_ID,
+  DEV_IDENTITY_POOL_ID,
+  PROD_API_GATEWAY_REGION,
+  PROD_API_GATEWAY_URL,
+  PROD_COGNITO_REGION,
+  PROD_USER_POOL_ID,
+  PROD_APP_ID,
+  PROD_IDENTITY_POOL_ID,
+} = process.env;
+
 const dev = {
-  test: process.env.TEST_REGION,
-  all: process.env,
   stage: 'dev',
   apiGateway: {
-    REGION: 'us-west-2',
-    URL: 'https://contra-api.colemars.dev/dev',
+    REGION: DEV_API_GATEWAY_REGION,
+    URL: DEV_API_GATEWAY_URL,
   },
   cognito: {
-    REGION: 'us-west-2',
-    USER_POOL_ID: 'us-west-2_9AJfFSR7r',
-    APP_CLIENT_ID: '43h28i8vqvvbkppuq91uvfqqne',
-    IDENTITY_POOL_ID: 'us-west-2:84077fe0-b370-4268-99a5-0945eca5cfa6',
+    REGION: DEV_COGNITO_REGION,
+    USER_POOL_ID: DEV_USER_POOL_ID,
+    APP_CLIENT_ID: DEV_APP_ID,
+    IDENTITY_POOL_ID: DEV_IDENTITY_POOL_ID,
   },
 };
 
 const prod = {
   stage: 'prod',
   apiGateway: {
-    REGION: 'us-west-2',
-    URL: 'https://contra-api.colemars.dev/prod',
+    REGION: PROD_API_GATEWAY_REGION,
+    URL: PROD_API_GATEWAY_URL,
   },
   cognito: {
-    REGION: 'us-west-2',
-    USER_POOL_ID: 'us-west-2_Rym6GAUMG',
-    APP_CLIENT_ID: '6b88c9q4vqrl64t7bq99f73abu',
-    IDENTITY_POOL_ID: 'us-west-2:310191c5-8c8e-4817-8894-834e8cec57db',
+    REGION: PROD_COGNITO_REGION,
+    USER_POOL_ID: PROD_USER_POOL_ID,
+    APP_CLIENT_ID: PROD_APP_ID,
+    IDENTITY_POOL_ID: PROD_IDENTITY_POOL_ID,
   },
 };
-
-console.log(process.env, 'here');
-
-// diff diff diff
-// diff diff diff
 
 // Default to dev if not set
 const config = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod : dev;
