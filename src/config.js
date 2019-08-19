@@ -29,9 +29,6 @@ const prod = {
 // Default to dev if not set
 const config = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod : dev;
 console.log(config);
-const { NOW_GITHUB_COMMIT_REF } = process.env;
-console.log(NOW_GITHUB_COMMIT_REF);
-console.log(process.env);
 
 export default {
   // Add common config values here
