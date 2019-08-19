@@ -29,6 +29,9 @@ const prod = {
 const { TEST_REGION } = process.env;
 console.log(TEST_REGION, 'here');
 
+// diff diff diff
+// diff diff diff
+
 // Default to dev if not set
 const config = process.env.NOW_GITHUB_COMMIT_REF === 'master' ? prod : dev;
 console.log(config);
