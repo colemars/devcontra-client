@@ -3,8 +3,10 @@
   "github": {
     "enabled": true
   },
-  "env": {
-    "TEST_REGION": "@test-region"
+  "build": {
+    "env": {
+      "TEST_REGION": "@test-region"
+    }
   },
   "alias": "prod-devcontra.now.sh"
 }
