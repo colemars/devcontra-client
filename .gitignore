@@ -5,3 +5,4 @@ src/functions/pages
 .next
 build/
 .vscode/
+NOW_ENV_CMDS.txt
