@@ -4,7 +4,7 @@
     "enabled": true
   },
   "env": {
-    "TEST_REGION2": "@test-region"
+    "TEST_REGION": "@test-region"
   },
   "alias": "prod-devcontra.now.sh"
 }

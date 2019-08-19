@@ -1,4 +1,5 @@
 const dev = {
+  test: process.env.TEST_REGION,
   stage: 'dev',
   apiGateway: {
     REGION: 'us-west-2',
