@@ -6,5 +6,5 @@
   "env": {
     "TEST_REGION2": "@test-region"
   },
-  "alias": "test-master.now.sh"
+  "alias": "prod-devcontra.now.sh"
 }
