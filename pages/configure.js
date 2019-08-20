@@ -7,6 +7,7 @@ import SettingsInputComponent from '@material-ui/icons/SettingsInputComponent';
 import { useRouter } from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
 import { API } from 'aws-amplify';
+import PropTypes from 'prop-types';
 import ConfigureSite from '../components/ConfigureSite';
 import { useAuthContext } from '../context/user-context';
 
@@ -46,7 +47,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Configure = () => {
+const Configure = props => {
+  const { stackOverflowUrl, spectrumUrl, githubUrl, twitterUrl } = props;
   const router = useRouter();
   const classes = useStyles();
   const { isLoggedIn } = useAuthContext();
@@ -80,21 +82,25 @@ const Configure = () => {
                     src="/static/stack.png"
                     variant="stackoverflow"
                     label="StackOverflow URL"
+                    profileUrl={stackOverflowUrl}
                   />
                   <ConfigureSite
                     src="/static/github.png"
                     variant="github"
                     label="Github URL (coming soon)"
+                    profileUrl={githubUrl}
                   />
                   <ConfigureSite
                     src="/static/spectrum.png"
                     variant="spectrum"
                     label="Spectrum URL (coming soon"
+                    profileUrl={spectrumUrl}
                   />
                   <ConfigureSite
                     src="/static/twitter.png"
                     variant="twitter"
                     label="Twitter URL (coming soon"
+                    profileUrl={twitterUrl}
                   />
                 </Grid>
               </form>
@@ -111,15 +117,29 @@ Configure.getInitialProps = async () => {
   const apiName = 'contra';
   const path = '/profile/stackoverflow';
   try {
-    const results = await API.get(apiName, path);
+    const stackOverflow = await API.get(apiName, path);
     return {
-      results,
+      stackOverflowUrl: stackOverflow[0].profileUrl,
     };
   } catch (err) {
     return {
       results: null,
     };
   }
+};
+
+Configure.defaultProps = {
+  stackOverflowUrl: '',
+  githubUrl: '',
+  spectrumUrl: '',
+  twitterUrl: '',
+};
+
+Configure.propTypes = {
+  stackOverflowUrl: PropTypes.string,
+  githubUrl: PropTypes.string,
+  spectrumUrl: PropTypes.string,
+  twitterUrl: PropTypes.string,
 };
 
 export default Configure;

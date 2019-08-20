@@ -80,7 +80,7 @@ const verifyUrl = urlString => {
   return true;
 };
 
-const createProfile = async (targetUserId, variant) => {
+const createProfile = async (targetUserId, variant, urlString) => {
   const contraPost = fields => {
     return API.post('contra', '/profile', {
       body: fields,
@@ -90,6 +90,7 @@ const createProfile = async (targetUserId, variant) => {
   await contraPost({
     targetUserId,
     variant,
+    profileUrl: urlString,
   });
 
   return true;
@@ -102,12 +103,12 @@ const ConfigureSite = props => {
   const waiting = 'waiting';
   const loading = 'loading';
   const classes = useStyles();
-  const { src, variant, label } = props;
+  const { src, variant, label, profileUrl } = props;
   const [rotate, setRotate] = useState();
   const [animate, setAnimate] = useState();
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(profileUrl);
   const [status, setStatus] = useState(waiting);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [confirmed, setConfirmed] = useState(false);
   const [rotateTime, setRotateTime] = useState();
   const [snackMessage, setSnackMessage] = useState('error');
@@ -130,6 +131,14 @@ const ConfigureSite = props => {
     setRotate(true);
     setTimeout(() => setAnimate('infinite'), 500);
   };
+
+  useEffect(() => {
+    setIsLoading(false);
+    if (profileUrl.length > 0) {
+      setStatus(success);
+      setConfirmed(true);
+    }
+  }, [profileUrl]);
 
   useEffect(() => {
     if (status === success) {
@@ -180,7 +189,7 @@ const ConfigureSite = props => {
     const targetUserId = urlString.split('/')[4];
 
     try {
-      await createProfile(targetUserId, variant);
+      await createProfile(targetUserId, variant, urlString);
       setStatus(success);
       setSnackMessage(`${variant} profile created`);
       setSnackVariant('success');
@@ -267,6 +276,7 @@ ConfigureSite.propTypes = {
   src: PropTypes.string.isRequired,
   variant: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  profileUrl: PropTypes.string.isRequired,
 };
 
 export default ConfigureSite;
