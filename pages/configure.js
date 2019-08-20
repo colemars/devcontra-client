@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import SettingsInputComponent from '@material-ui/icons/SettingsInputComponent';
 import { useRouter } from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
+import { API } from 'aws-amplify';
 import ConfigureSite from '../components/ConfigureSite';
 import { useAuthContext } from '../context/user-context';
 
@@ -104,6 +105,21 @@ const Configure = () => {
       </Box>
     </div>
   );
+};
+
+Configure.getInitialProps = async () => {
+  const apiName = 'contra';
+  const path = '/profile/stackoverflow';
+  try {
+    const results = await API.get(apiName, path);
+    return {
+      results,
+    };
+  } catch (err) {
+    return {
+      results: null,
+    };
+  }
 };
 
 export default Configure;
