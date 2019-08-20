@@ -4,4 +4,4 @@
 
 This deployment's services are limited to resources configured for this test environment. 
 
-[Go to deployment.](devcontra-client-next-git-test.colemars.now.sh)
+[Go to deployment.](https://devcontra-client-next-git-test.colemars.now.sh/)
