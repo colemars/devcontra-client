@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useAuthContext } from '../context/user-context';
-import Layout from '../components/Layout';
-import SignIn from './signin';
-import Configure from './configure';
 
 const Index = () => {
   const { isLoggedIn } = useAuthContext();
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace('/configure');
+    }
+    if (!isLoggedIn) {
+      router.replace('/signin');
+    }
+  }, [isLoggedIn]);
 
-  return (
-    <Layout>
-      {!isLoggedIn && <SignIn />}
-      {isLoggedIn && <Configure />}
-    </Layout>
-  );
+  return <></>;
 };
 
 export default Index;

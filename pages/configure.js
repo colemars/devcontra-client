@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import SettingsInputComponent from '@material-ui/icons/SettingsInputComponent';
+import { useRouter } from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
 import ConfigureSite from '../components/ConfigureSite';
+import { useAuthContext } from '../context/user-context';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,8 +45,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Configure() {
+const Configure = () => {
+  const router = useRouter();
   const classes = useStyles();
+  const { isLoggedIn } = useAuthContext();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace('/signin ');
+    }
+  }, [isLoggedIn]);
 
   return (
     <div className={classes.root}>
@@ -94,4 +104,6 @@ export default function Configure() {
       </Box>
     </div>
   );
-}
+};
+
+export default Configure;

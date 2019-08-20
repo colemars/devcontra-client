@@ -14,9 +14,9 @@ import BorderClear from '@material-ui/icons/BorderClear';
 import { amber, green } from '@material-ui/core/colors';
 import { Auth } from 'aws-amplify';
 import Link from 'next/link';
+import ButtonLink from '@material-ui/core/Link';
 import Router from 'next/router';
 import { useAuthContext } from '../context/user-context';
-import Layout from '../components/Layout';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
@@ -105,7 +105,7 @@ const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link href="/" passhref>
+      <Link href="/">
         <a className={classes.link}>DevContra</a>
       </Link>{' '}
       {new Date().getFullYear()}
@@ -288,17 +288,18 @@ const Signup = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link
+                <ButtonLink
+                  component="button"
                   variant="body2"
-                  href="/"
+                  underline="none"
+                  className={classes.link}
                   onClick={() => setNewUser('returning')}
-                  passHref
                 >
-                  <a className={classes.link}>Got a code?</a>
-                </Link>
+                  Got a code?
+                </ButtonLink>
               </Grid>
               <Grid item>
-                <Link href="/" variant="body2" passhref>
+                <Link href="/">
                   <a className={classes.link}>
                     Already have an account? Sign In
                   </a>
@@ -319,7 +320,7 @@ const Signup = () => {
       </Container>
     );
   };
-
+  // TODO make confirmation form its own page and store email/password in context
   const renderConfirmationForm = () => {
     return (
       <Container component="main" maxWidth="xs">
@@ -387,11 +388,7 @@ const Signup = () => {
     );
   };
 
-  return (
-    <Layout>
-      {newUser === null ? renderForm() : renderConfirmationForm()}
-    </Layout>
-  );
+  return newUser === null ? renderForm() : renderConfirmationForm();
 };
 
 export default Signup;
