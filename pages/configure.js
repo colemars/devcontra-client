@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { API } from 'aws-amplify';
 import PropTypes from 'prop-types';
 import ConfigureSite from '../components/ConfigureSite';
-import { useAuthContext } from '../context/user-context';
+import { useAuthContext, useDataContext } from '../context/user-context';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -48,10 +48,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Configure = props => {
-  const { stackOverflowUrl, spectrumUrl, githubUrl, twitterUrl } = props;
   const router = useRouter();
   const classes = useStyles();
   const { isLoggedIn } = useAuthContext();
+  const { setData } = useDataContext();
+  const {
+    profileData,
+    stackOverflowUrl,
+    spectrumUrl,
+    githubUrl,
+    twitterUrl,
+  } = props;
+
+  useEffect(() => {
+    setData(profileData);
+  }, [profileData]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -120,6 +131,7 @@ Configure.getInitialProps = async () => {
     const stackOverflow = await API.get(apiName, path);
     return {
       stackOverflowUrl: stackOverflow[0].profileUrl,
+      profileData: { stackOverflow },
     };
   } catch (err) {
     return {
@@ -140,6 +152,9 @@ Configure.propTypes = {
   githubUrl: PropTypes.string,
   spectrumUrl: PropTypes.string,
   twitterUrl: PropTypes.string,
+  profileData: PropTypes.shape({
+    stackOverflow: PropTypes.array.isRequired,
+  }).isRequired,
 };
 
 export default Configure;
