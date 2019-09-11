@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import configureAmplify from '../src/amplify';
 import WithAuth from '../decorators/withAuth';
+import WithData from '../decorators/withData';
 import Layout from '../components/Layout';
 
 class MyApp extends App {
@@ -32,7 +33,9 @@ class MyApp extends App {
           <CssBaseline />
           <WithAuth>
             <Layout>
-              <Component {...pageProps} />
+              <WithData>
+                <Component {...pageProps} />
+              </WithData>
             </Layout>
           </WithAuth>
         </ThemeProvider>
