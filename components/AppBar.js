@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 const DefaultAppBar = () => {
   const classes = useStyles();
   const { isLoggedIn } = useAuthContext();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   function handleMenu(event) {
@@ -62,7 +62,9 @@ const DefaultAppBar = () => {
           </Typography>
           <Button color="inherit" edge="end">
             <Typography variant="h5" className={classes.demo}>
-              demo
+              <Link href="/demo" passHref>
+                <a className={classes.link}>DEMO</a>
+              </Link>
             </Typography>
           </Button>
           {isLoggedIn && (
