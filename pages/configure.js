@@ -60,6 +60,8 @@ const Configure = props => {
     twitterUrl,
   } = props;
 
+  console.log(profileData);
+
   useEffect(() => {
     setData(profileData);
   }, [profileData]);
@@ -98,20 +100,22 @@ const Configure = props => {
                   <ConfigureSite
                     src="/static/github.png"
                     variant="github"
-                    label="Github URL (coming soon)"
+                    label="Github URL"
                     profileUrl={githubUrl}
                   />
                   <ConfigureSite
                     src="/static/spectrum.png"
                     variant="spectrum"
-                    label="Spectrum URL (coming soon"
+                    label="Spectrum URL (coming soon)"
                     profileUrl={spectrumUrl}
+                    unavailable
                   />
                   <ConfigureSite
                     src="/static/twitter.png"
                     variant="twitter"
-                    label="Twitter URL (coming soon"
+                    label="Twitter URL (coming soon)"
                     profileUrl={twitterUrl}
+                    unavailable
                   />
                 </Grid>
               </form>
@@ -126,12 +130,15 @@ const Configure = props => {
 
 Configure.getInitialProps = async () => {
   const apiName = 'contra';
-  const path = '/profile/stackoverflow';
+  const stackPath = '/profile/stackoverflow';
+  const gitPath = '/profile/github';
   try {
-    const stackOverflow = await API.get(apiName, path);
+    const stackOverflow = await API.get(apiName, stackPath);
+    const github = await API.get(apiName, gitPath);
     return {
       stackOverflowUrl: stackOverflow[0].profileUrl,
-      profileData: { stackOverflow },
+      githubUrl: github[0].profileUrl,
+      profileData: { stackOverflow, github },
     };
   } catch (err) {
     return {
@@ -145,6 +152,7 @@ Configure.defaultProps = {
   githubUrl: '',
   spectrumUrl: '',
   twitterUrl: '',
+  profileData: {},
 };
 
 Configure.propTypes = {
@@ -153,8 +161,8 @@ Configure.propTypes = {
   spectrumUrl: PropTypes.string,
   twitterUrl: PropTypes.string,
   profileData: PropTypes.shape({
-    stackOverflow: PropTypes.array.isRequired,
-  }).isRequired,
+    stackOverflow: PropTypes.array,
+  }),
 };
 
 export default Configure;
