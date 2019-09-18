@@ -7,3 +7,4 @@ build/
 .vscode/
 NOW_ENV_CMDS.txt
 .env.build
+.env
