@@ -5,14 +5,9 @@ module.exports = {
   },
   extends: [
     "airbnb",
-    "prettier",
-    "prettier/react",
     "plugin:react/recommended",
+    "prettier",
   ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
   parserOptions: {
     ecmaVersion: 2018,
     ecmaFeatures: {
@@ -25,11 +20,6 @@ module.exports = {
     "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "hrefLeft", "hrefRight" ],
-      "aspects": [ "invalidHref", "preferButton" ]
-    }]
   },
   plugins: [
     "prettier", "react"
@@ -38,7 +28,8 @@ module.exports = {
     react: {
       pragma: "React",
       version: "detect"
-    }
+    },
+    "import/resolver": "webpack"
   },
-  "parser": "babel-eslint"
+  parser: "babel-eslint"
 };
