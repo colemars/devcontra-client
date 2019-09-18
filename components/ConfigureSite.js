@@ -76,11 +76,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const verifyUrl = urlString => {
-  if (urlString.length < 32) return false;
+  if (!urlString.includes('https')) return false;
   return true;
 };
 
-const createProfile = async (targetUserId, variant, urlString) => {
+const createProfile = async (variant, urlString) => {
   const contraPost = fields => {
     return API.post('contra', '/profile', {
       body: fields,
@@ -88,7 +88,6 @@ const createProfile = async (targetUserId, variant, urlString) => {
   };
 
   await contraPost({
-    targetUserId,
     variant,
     profileUrl: urlString,
   });
@@ -103,7 +102,7 @@ const ConfigureSite = props => {
   const waiting = 'waiting';
   const loading = 'loading';
   const classes = useStyles();
-  const { src, variant, label, profileUrl } = props;
+  const { src, variant, label, profileUrl, unavailable } = props;
   const [rotate, setRotate] = useState();
   const [animate, setAnimate] = useState();
   const [url, setUrl] = useState(profileUrl);
@@ -114,8 +113,6 @@ const ConfigureSite = props => {
   const [snackMessage, setSnackMessage] = useState('error');
   const [snackVariant, setSnackVariant] = useState('error');
   const [snackOpen, setSnackOpen] = useState(false);
-  const unavailableList = ['spectrum', 'twitter', 'github'];
-  const [unavailable] = useState(unavailableList.includes(variant));
 
   const handleAnimate = bool => {
     if (status === loading) {
@@ -186,10 +183,9 @@ const ConfigureSite = props => {
     }
 
     setStatus(loading);
-    const targetUserId = urlString.split('/')[4];
 
     try {
-      await createProfile(targetUserId, variant, urlString);
+      await createProfile(variant, urlString);
       setStatus(success);
       setSnackMessage(`${variant} profile created`);
       setSnackVariant('success');
@@ -248,7 +244,8 @@ const ConfigureSite = props => {
             )}
           </Transition>
           {/* <DataUsage fontSize="medium" className={`${variant}-data`} style={{}} key={variant} /> */}
-          <style jsx global>{`
+          <style jsx global>
+            {`
             @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
             @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
             @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
@@ -259,7 +256,8 @@ const ConfigureSite = props => {
               animation:spin ${rotateTime}s linear ${animate};
             }
           }
-        `}</style>
+        `}
+          </style>
         </Grid>
       </Grid>
       <CustomizedSnackbars
@@ -272,11 +270,16 @@ const ConfigureSite = props => {
   );
 };
 
+ConfigureSite.defaultProps = {
+  unavailable: false,
+};
+
 ConfigureSite.propTypes = {
   src: PropTypes.string.isRequired,
   variant: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   profileUrl: PropTypes.string.isRequired,
+  unavailable: PropTypes.bool,
 };
 
 export default ConfigureSite;
