@@ -20,12 +20,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
-  header: {
-    position: 'absolute',
-    top: '11em',
-    left: '44.4em',
-    color: theme.palette.paper.main,
-  },
   paper: {
     padding: theme.spacing(1),
     textAlign: 'center',
@@ -34,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.light,
   },
   grid: {
-    marginTop: '3.5em',
+    marginTop: '2em',
   },
   settingsIcon: {
     color: theme.palette.paper.main,
@@ -113,9 +107,8 @@ const Configure = props => {
                   <ConfigureSite
                     src="/static/twitter.png"
                     variant="twitter"
-                    label="Twitter URL (coming soon)"
+                    label="Twitter URL"
                     profileUrl={twitterUrl}
-                    unavailable
                   />
                 </Grid>
               </form>
@@ -132,13 +125,16 @@ Configure.getInitialProps = async () => {
   const apiName = 'contra';
   const stackPath = '/profile/stackoverflow';
   const gitPath = '/profile/github';
+  const twitterPath = '/profile/twitter';
   try {
     const stackOverflow = await API.get(apiName, stackPath);
     const github = await API.get(apiName, gitPath);
+    const twitter = await API.get(apiName, twitterPath);
     return {
       stackOverflowUrl: stackOverflow[0].profileUrl,
       githubUrl: github[0].profileUrl,
-      profileData: { stackOverflow, github },
+      twitterUrl: twitter[0].profileUrl,
+      profileData: { stackOverflow, github, twitter },
     };
   } catch (err) {
     return {
