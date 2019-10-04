@@ -12,7 +12,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AddCircleOutlined';
 import BorderClear from '@material-ui/icons/BorderClear';
 import { amber, green } from '@material-ui/core/colors';
-import { Auth } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import Link from 'next/link';
 import ButtonLink from '@material-ui/core/Link';
 import Router from 'next/router';
@@ -194,6 +194,7 @@ const Signup = () => {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
+      await API.post('contra', '/user');
       setIsLoggedIn(true);
       setSnackMessage('Email confirmed');
       setSnackVariant('success');
