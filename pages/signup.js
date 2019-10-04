@@ -194,7 +194,9 @@ const Signup = () => {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
-      await API.post('contra', '/user');
+      console.log('sign in successful', Auth);
+      const test = await API.post('contra', '/user');
+      console.log('API', test);
       setIsLoggedIn(true);
       setSnackMessage('Email confirmed');
       setSnackVariant('success');
