@@ -12,10 +12,10 @@
 [![npm downloads](https://img.shields.io/npm/dm/devcontra-component.svg)](https://www.npmjs.com/package/devcontra-component)
 ![Code style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)
 [![Follow on Twitter](https://img.shields.io/twitter/follow/itsacolemars.svg?label=follow)](https://twitter.com/itsacolemars)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=mui-org/material-ui)](https://dependabot.com)
-[![PeerDependencies](https://david-dm.org/colemars/devcontra-component/peer-status.svg?path=packages/material-ui)](https://david-dm.org/colemars/devcontra-component/peer-status.svg?path=packages/material-ui)
-[![Dependencies](https://david-dm.org/colemars/devcontra-component/master/status.svg?path=packages/material-ui)](https://david-dm.org/colemars/devcontra-component/master/status.svg?path=packages/material-ui)
-[![DevDependencies](https://david-dm.org/colemars/devcontra-component/master/dev-status.svg?path=packages/material-ui)](https://david-dm.org/colemars/devcontra-component/master?type=dev)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=colemars/devcontra-component)](https://dependabot.com)
+[![PeerDependencies](https://david-dm.org/colemars/devcontra-component/peer-status.svg?path=packages/devcontra-component)](https://david-dm.org/colemars/devcontra-component/peer-status.svg?path=packages/devcontra-component)
+[![Dependencies](https://david-dm.org/colemars/devcontra-component/master/status.svg?path=packages/devcontra-component)](https://david-dm.org/colemars/devcontra-component/master/status.svg?path=packages/devcontra-component)
+[![DevDependencies](https://david-dm.org/colemars/devcontra-component/master/dev-status.svg?path=packages/devcontra-component)](https://david-dm.org/colemars/devcontra-component/master?type=dev)
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/colemars/devcontra-component.svg)](https://isitmaintained.com/project/colemars/devcontra-component "Average time to resolve an issue")
 </div>
 
@@ -23,7 +23,7 @@
 
 DevContra is available as an [npm package](https://www.npmjs.com/package/devcontra-component).
 
-**[Stable channel v0](https://material-ui.com/)**
+**[Stable channel v0](https://prod-devcontra.now.sh)**
 ```sh
 // with npm
 npm i devcontra-component
@@ -63,7 +63,7 @@ please free to use Github issues or contact me directly.
 
 ## Examples
 
-[DevContra Demo](hhttps://prod-devcontra.now.sh/demo)
+[DevContra Demo](https://prod-devcontra.now.sh/demo)
 
 ## Contributing
 
