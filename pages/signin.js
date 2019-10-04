@@ -109,6 +109,19 @@ const SignIn = () => {
   const [snackOpen, setSnackOpen] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    async function handleSession() {
+      try {
+        await Auth.currentAuthenticatedUser();
+        setIsLoggedIn(true);
+        router.replace('/configure');
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    handleSession();
+  }, [isLoggedIn]);
+
   const validateForm = () => {
     return password.length > 0 && email.length > 0;
   };
@@ -117,6 +130,7 @@ const SignIn = () => {
     e.preventDefault();
     try {
       await Auth.signIn(email, password);
+      setIsLoggedIn(true);
       setEmailError(false);
       setPasswordError(false);
       setSnackMessage('Successfully logged in');
