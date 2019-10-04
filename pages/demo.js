@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
 import DevContra from 'devcontra-component';
+import { useAuthContext } from '../context/user-context';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -46,12 +48,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Demo = () => {
+  const [user, setUser] = useState();
   const classes = useStyles();
+  const { setIsLoggedIn, isLoggedIn } = useAuthContext();
 
+  useEffect(() => {
+    async function handleSession() {
+      try {
+        setUser(await Auth.currentAuthenticatedUser());
+        setIsLoggedIn(true);
+      } catch (error) {
+        setIsLoggedIn(false);
+      }
+    }
+    handleSession();
+  }, [isLoggedIn]);
   return (
     <div className={classes.root}>
       <div style={{ borderColor: 'red', borderWidth: 1 }}>
-        <DevContra email={process.env.EMAIL} password={process.env.PASSWORD} />
+        <DevContra profileKey="e380df4d-c9b0-4ac0-be51-6cf8a49d0760" />
       </div>
       <Box display={{ xs: 'block', md: 'none' }}>
         hide on screens wider than md
