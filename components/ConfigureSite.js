@@ -8,7 +8,6 @@ import DataUsage from '@material-ui/icons/DataUsage';
 import { Transition } from 'react-transition-group';
 import { amber, green } from '@material-ui/core/colors';
 import { API } from 'aws-amplify';
-
 import CustomizedSnackbars from './SnackBarContentWrapper';
 
 const duration = 500;
@@ -243,7 +242,6 @@ const ConfigureSite = props => {
               />
             )}
           </Transition>
-          {/* <DataUsage fontSize="medium" className={`${variant}-data`} style={{}} key={variant} /> */}
           <style jsx global>
             {`
             @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
