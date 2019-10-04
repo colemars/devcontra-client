@@ -1,17 +1,23 @@
 import React, { useEffect } from 'react';
+import { Auth } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useAuthContext } from '../context/user-context';
 
 const Index = () => {
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn, setIsLoggedIn } = useAuthContext();
   const router = useRouter();
   useEffect(() => {
-    if (isLoggedIn) {
-      router.replace('/configure');
+    async function handleSession() {
+      try {
+        await Auth.currentAuthenticatedUser();
+        setIsLoggedIn(true);
+        router.replace('/configure');
+      } catch (error) {
+        setIsLoggedIn(false);
+        router.replace('/signin');
+      }
     }
-    if (!isLoggedIn) {
-      router.replace('/signin');
-    }
+    handleSession();
   }, [isLoggedIn]);
 
   return <></>;
