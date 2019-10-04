@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { Auth } from 'aws-amplify';
 import { useAuthContext } from '../context/user-context';
 
 const useStyles = makeStyles(theme => ({
@@ -42,14 +44,21 @@ const DefaultAppBar = () => {
   const { isLoggedIn } = useAuthContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const router = useRouter();
 
-  function handleMenu(event) {
+  const handleMenu = event => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
+
+  const handleSignOut = async () => {
+    await Auth.signOut();
+    setAnchorEl(null);
+    router.replace('/');
+  };
 
   return (
     <div className={classes.root}>
@@ -93,7 +102,7 @@ const DefaultAppBar = () => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
             </div>
