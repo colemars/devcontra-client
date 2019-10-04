@@ -67,7 +67,7 @@ please free to use Github issues or contact me directly.
 
 ## Contributing
 
-Read the [contributing guide](/CONTRIBUTING.md) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to DevContra.
+Read the [contributing guide](/CONTRIBUTING.MD) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to DevContra.
 
 ## Changelog
 
