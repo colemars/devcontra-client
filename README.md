@@ -101,13 +101,23 @@ dynamoDb, Cognito, Cloudformation, API Gateway, IAM, and CloudWatch make continu
 
 BrowserStack allows us to test in real browsers.
 
-[<img src="https://avatars1.githubusercontent.com/u/52219245?s=200&v=4" width="50">](https://codecov.io/)
+[<img src="https://avatars1.githubusercontent.com/u/52219245?s=200&v=4" width="50">](https://seed.run)
 
 Seed.run allows for simple and quick API CI/CD pipeline management.
 
-[<img src="https://user-images.githubusercontent.com/2752551/30404910-d56d9b66-989d-11e7-9208-b720eb28b4f2.png" width="150">](https://codecov.io/)
+[<img src="https://user-images.githubusercontent.com/2752551/30404910-d56d9b66-989d-11e7-9208-b720eb28b4f2.png" width="150">](https://serverless.com/)
 
 Serverless Framework allows for building and operating a serverless application. 
+
+[<img src="https://lh4.googleusercontent.com/XnrMs4cNpMtZLAuUxypJnF1hDllFb3Hz53_WlHIqx8yo0yPzTnjfGmb18dS_9fHzJF5RjgEct7Wv7Xd99PJCCA6n5GOEvdZNxGTF0JulDZPYaGaoT-c25Zxcon9pCZqLeHSZgvuZ" width="150">](https://zeit.co/)
+
+ZEIT Now offers a great solution for site hosting. 
+
+[<img src="https://seeklogo.com/images/N/next-js-logo-7929BCD36F-seeklogo.com.png" width="150">](https://nextjs.org/)
+
+NEXT.js is a React Framework that offers a great server side rendering solution.
+
+
 
 ## License
 
