@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import SettingsInputComponent from '@material-ui/icons/SettingsInputComponent';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { useRouter } from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
 import { API } from 'aws-amplify';
@@ -30,14 +32,30 @@ const useStyles = makeStyles(theme => ({
   grid: {
     marginTop: '2em',
   },
-  settingsIcon: {
-    color: theme.palette.paper.main,
-  },
-  avatar: {
+  configureAvatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
-    top: '1.5em',
+    top: '2em',
     left: '1em',
+    cursor: 'pointer',
+    width: 50,
+    height: 50,
+    display: 'inline-block',
+  },
+  settingsAvatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+    top: '2em',
+    left: '1em',
+    cursor: 'pointer',
+    width: 50,
+    height: 50,
+    display: 'inline-block',
+  },
+  icon: {
+    margin: 'auto',
+    display: 'block',
+    marginTop: '23%',
   },
 }));
 
@@ -53,8 +71,7 @@ const Configure = props => {
     githubUrl,
     twitterUrl,
   } = props;
-
-  console.log(profileData);
+  const [selected, setSelected] = useState('configure');
 
   useEffect(() => {
     setData(profileData);
@@ -62,9 +79,14 @@ const Configure = props => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.replace('/signin ');
+      router.replace('/');
     }
   }, [isLoggedIn]);
+
+  const generateAccessKey = async () => {
+    const result = await API.put('contra', '/profile/key');
+    console.log(result);
+  };
 
   return (
     <div className={classes.root}>
@@ -76,41 +98,74 @@ const Configure = props => {
         <Grid className={classes.grid} container>
           <Grid item xs={3} />
           <Grid item xs={6}>
-            <Avatar className={classes.avatar}>
+            <Avatar
+              className={classes.configureAvatar}
+              onClick={() => setSelected('configure')}
+            >
               <SettingsInputComponent
-                fontSize="small"
-                className={classes.settingsIcon}
+                fontSize="default"
+                className={classes.icon}
+                style={{ color: selected === 'configure' ? 'white' : '' }}
+              />
+            </Avatar>
+            <Avatar
+              className={classes.settingsAvatar}
+              onClick={() => setSelected('settings')}
+            >
+              <SettingsIcon
+                fontSize="default"
+                className={classes.icon}
+                style={{ color: selected === 'settings' ? 'white' : '' }}
               />
             </Avatar>
             <Paper className={classes.paper}>
               <form className={classes.container} noValidate autoComplete="off">
-                <Grid container spacing={3}>
-                  <ConfigureSite
-                    src="/static/stack.png"
-                    variant="stackoverflow"
-                    label="StackOverflow URL"
-                    profileUrl={stackOverflowUrl}
-                  />
-                  <ConfigureSite
-                    src="/static/github.png"
-                    variant="github"
-                    label="Github URL"
-                    profileUrl={githubUrl}
-                  />
-                  <ConfigureSite
-                    src="/static/spectrum.png"
-                    variant="spectrum"
-                    label="Spectrum URL (coming soon)"
-                    profileUrl={spectrumUrl}
-                    unavailable
-                  />
-                  <ConfigureSite
-                    src="/static/twitter.png"
-                    variant="twitter"
-                    label="Twitter URL"
-                    profileUrl={twitterUrl}
-                  />
-                </Grid>
+                {selected === 'configure' && (
+                  <Grid container spacing={3}>
+                    <ConfigureSite
+                      src="/static/stack.png"
+                      variant="stackoverflow"
+                      label="StackOverflow URL"
+                      profileUrl={stackOverflowUrl}
+                    />
+                    <ConfigureSite
+                      src="/static/github.png"
+                      variant="github"
+                      label="Github URL"
+                      profileUrl={githubUrl}
+                    />
+                    <ConfigureSite
+                      src="/static/spectrum.png"
+                      variant="spectrum"
+                      label="Spectrum URL (coming soon)"
+                      profileUrl={spectrumUrl}
+                      unavailable
+                    />
+                    <ConfigureSite
+                      src="/static/twitter.png"
+                      variant="twitter"
+                      label="Twitter URL"
+                      profileUrl={twitterUrl}
+                    />
+                  </Grid>
+                )}
+                {selected === 'settings' && (
+                  <Grid container spacing={3}>
+                    <>
+                      <Grid container item xs={12} spacing={3}>
+                        <Grid item xs={3}>
+                          <Button
+                            variant="contained"
+                            className={classes.button}
+                            onClick={generateAccessKey}
+                          >
+                            Generate
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </>
+                  </Grid>
+                )}
               </form>
             </Paper>
           </Grid>
@@ -127,16 +182,22 @@ Configure.getInitialProps = async () => {
   const gitPath = '/profile/github';
   const twitterPath = '/profile/twitter';
   try {
-    const stackOverflow = await API.get(apiName, stackPath);
-    const github = await API.get(apiName, gitPath);
-    const twitter = await API.get(apiName, twitterPath);
+    const [stackOverflow, github, twitter] = await Promise.all([
+      API.get(apiName, stackPath),
+      API.get(apiName, gitPath),
+      API.get(apiName, twitterPath),
+    ]);
+    const stackOverflowUrl = stackOverflow ? stackOverflow[0].profileUrl : '';
+    const githubUrl = github.length > 0 ? github[0].profileUrl : '';
+    const twitterUrl = twitter.length > 0 ? twitter[0].profileUrl : '';
     return {
-      stackOverflowUrl: stackOverflow[0].profileUrl,
-      githubUrl: github[0].profileUrl,
-      twitterUrl: twitter[0].profileUrl,
+      stackOverflowUrl,
+      githubUrl,
+      twitterUrl,
       profileData: { stackOverflow, github, twitter },
     };
   } catch (err) {
+    console.log(err);
     return {
       results: null,
     };
