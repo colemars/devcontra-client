@@ -19,7 +19,7 @@
     "babel-plugin-import": "^1.12.1",
     "clsx": "^1.0.4",
     "constate": "^1.2.0",
-    "devcontra-component": "0.0.242",
+    "devcontra-component": "0.0.245",
     "dotenv": "^8.1.0",
     "dotenv-webpack": "^1.7.0",
     "isomorphic-unfetch": "^3.0.0",
