@@ -13,7 +13,7 @@
     "@babel/core": "^7.6.2",
     "@material-ui/core": "^4.4.2",
     "@material-ui/icons": "^4.4.1",
-    "@material-ui/styles": "^4.4.1",
+    "@material-ui/styles": "^4.5.0",
     "aws-amplify": "^1.1.38",
     "babel-plugin-import": "^1.12.1",
     "clsx": "^1.0.4",
@@ -27,13 +27,13 @@
     "path": "^0.12.7",
     "prop-types": "^15.7.2",
     "react": "16.10.2",
-    "react-dom": "16.9.0",
+    "react-dom": "16.10.2",
     "react-transition-group": "^4.3.0",
-    "webpack": "^4.40.2"
+    "webpack": "^4.41.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-config-react": "^1.1.7",
