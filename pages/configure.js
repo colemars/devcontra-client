@@ -3,9 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SettingsInputComponent from '@material-ui/icons/SettingsInputComponent';
 import SettingsIcon from '@material-ui/icons/Settings';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { useRouter } from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
 import { API } from 'aws-amplify';
@@ -18,6 +21,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     marginTop: '2.5em',
+  },
+  textField: {
+    paddingRight: theme.spacing(1),
+    width: '100%',
   },
   root: {
     flexGrow: 1,
@@ -57,21 +64,43 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     marginTop: '23%',
   },
+  fileCopyAvatar: {
+    cursor: 'pointer',
+  },
+  fileCopyIcon: {
+    margin: 'auto',
+    display: 'block',
+    marginTop: '23%',
+  },
+  button: {
+    // paddingLeft: 25,
+    // paddingRight: 25,
+  },
+  header: {
+    fontSize: 20,
+    marginLeft: theme.spacing(3.5),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 const Configure = props => {
   const router = useRouter();
   const classes = useStyles();
   const { isLoggedIn } = useAuthContext();
-  const { setData } = useDataContext();
+  const { setData, profileKey, setProfileKey } = useDataContext();
   const {
     profileData,
     stackOverflowUrl,
     spectrumUrl,
     githubUrl,
     twitterUrl,
+    generatedKey,
   } = props;
-  const [selected, setSelected] = useState('configure');
+  const [selected, setSelected] = useState('settings');
+
+  useEffect(() => {
+    setProfileKey(generatedKey);
+  }, []);
 
   useEffect(() => {
     setData(profileData);
@@ -84,8 +113,14 @@ const Configure = props => {
   }, [isLoggedIn]);
 
   const generateAccessKey = async () => {
-    const result = await API.put('contra', '/profile/key');
-    console.log(result);
+    const result = await API.put('contra', '/key/generate');
+    const key = result.Attributes.accessKey;
+
+    setProfileKey(key);
+  };
+
+  const copyProfileKey = () => {
+    navigator.clipboard.writeText(profileKey);
   };
 
   return (
@@ -105,7 +140,10 @@ const Configure = props => {
               <SettingsInputComponent
                 fontSize="default"
                 className={classes.icon}
-                style={{ color: selected === 'configure' ? 'white' : '' }}
+                style={{
+                  color:
+                    selected === 'configure' ? 'white' : 'rgba(255,255,255,.3)',
+                }}
               />
             </Avatar>
             <Avatar
@@ -115,7 +153,10 @@ const Configure = props => {
               <SettingsIcon
                 fontSize="default"
                 className={classes.icon}
-                style={{ color: selected === 'settings' ? 'white' : '' }}
+                style={{
+                  color:
+                    selected === 'settings' ? 'white' : 'rgba(255,255,255,.3)',
+                }}
               />
             </Avatar>
             <Paper className={classes.paper}>
@@ -150,20 +191,43 @@ const Configure = props => {
                   </Grid>
                 )}
                 {selected === 'settings' && (
-                  <Grid container spacing={3}>
-                    <>
-                      <Grid container item xs={12} spacing={3}>
-                        <Grid item xs={3}>
-                          <Button
-                            variant="contained"
-                            className={classes.button}
-                            onClick={generateAccessKey}
-                          >
-                            Generate
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </>
+                  <Grid container item xs={12} justify="center">
+                    <Grid container item alignItems="center" xs={12}>
+                      <span className={classes.header}>Profile Key</span>
+                    </Grid>
+                    <Grid
+                      container
+                      item
+                      alignItems="center"
+                      justify="center"
+                      xs={3}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={generateAccessKey}
+                      >
+                        Regenerate
+                      </Button>
+                    </Grid>
+                    <Grid item xs={7}>
+                      <TextField
+                        className={classes.textField}
+                        variant="outlined"
+                        value={profileKey || ''}
+                        disabled
+                      />
+                    </Grid>
+                    <Grid container item xs={2} alignItems="center">
+                      <IconButton
+                        className={classes.fileCopyAvatar}
+                        aria-label="delete"
+                        onClick={copyProfileKey}
+                      >
+                        <FileCopyIcon fontSize="default" />
+                      </IconButton>
+                    </Grid>
                   </Grid>
                 )}
               </form>
@@ -181,13 +245,16 @@ Configure.getInitialProps = async () => {
   const stackPath = '/profile/stackoverflow';
   const gitPath = '/profile/github';
   const twitterPath = '/profile/twitter';
+  const keyPath = '/key';
   try {
-    const [stackOverflow, github, twitter] = await Promise.all([
+    const [stackOverflow, github, twitter, generatedKey] = await Promise.all([
       API.get(apiName, stackPath),
       API.get(apiName, gitPath),
       API.get(apiName, twitterPath),
+      API.get(apiName, keyPath),
     ]);
-    const stackOverflowUrl = stackOverflow ? stackOverflow[0].profileUrl : '';
+    const stackOverflowUrl =
+      stackOverflow.length > 0 ? stackOverflow[0].profileUrl : '';
     const githubUrl = github.length > 0 ? github[0].profileUrl : '';
     const twitterUrl = twitter.length > 0 ? twitter[0].profileUrl : '';
     return {
@@ -195,6 +262,7 @@ Configure.getInitialProps = async () => {
       githubUrl,
       twitterUrl,
       profileData: { stackOverflow, github, twitter },
+      generatedKey: generatedKey.Item.accessKey,
     };
   } catch (err) {
     console.log(err);
@@ -210,6 +278,7 @@ Configure.defaultProps = {
   spectrumUrl: '',
   twitterUrl: '',
   profileData: {},
+  generatedKey: '',
 };
 
 Configure.propTypes = {
@@ -220,6 +289,7 @@ Configure.propTypes = {
   profileData: PropTypes.shape({
     stackOverflow: PropTypes.array,
   }),
+  generatedKey: PropTypes.string,
 };
 
 export default Configure;
