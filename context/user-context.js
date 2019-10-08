@@ -13,7 +13,11 @@ export const useAuthContext = createUseContext(useAuth, value => [
 
 const useData = () => {
   const [data, setData] = useState([]);
-  return { data, setData };
+  const [profileKey, setProfileKey] = useState();
+  return { data, setData, profileKey, setProfileKey };
 };
 
-export const useDataContext = createUseContext(useData, value => [value.data]);
+export const useDataContext = createUseContext(useData, value => [
+  value.data,
+  value.profileKey,
+]);
