@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Auth } from 'aws-amplify';
 import Box from '@material-ui/core/Box';
-import DevContra from 'devcontra-component';
+import DevContra from 'devcontra';
 import { useAuthContext } from '../context/user-context';
 
 const useStyles = makeStyles(theme => ({
