@@ -73,10 +73,6 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     marginTop: '23%',
   },
-  button: {
-    // paddingLeft: 25,
-    // paddingRight: 25,
-  },
   header: {
     fontSize: 20,
     marginLeft: theme.spacing(3.5),
@@ -209,7 +205,6 @@ const Configure = props => {
                       <Button
                         variant="contained"
                         color="primary"
-                        className={classes.button}
                         onClick={generateAccessKey}
                       >
                         Regenerate
