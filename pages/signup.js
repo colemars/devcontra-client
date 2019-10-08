@@ -16,7 +16,7 @@ import { API, Auth } from 'aws-amplify';
 import Link from 'next/link';
 import ButtonLink from '@material-ui/core/Link';
 import Router from 'next/router';
-import { useAuthContext } from '../context/user-context';
+import { useAuthContext, useDataContext } from '../context/user-context';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
@@ -130,6 +130,7 @@ const Signup = () => {
   const [passwordStrength, setPasswordStrength] = useState('weak');
   const [loading, setLoading] = useState(false);
   const { setIsLoggedIn } = useAuthContext();
+  const { setProfileKey } = useDataContext();
 
   const validateForm = () => {
     return (
@@ -194,9 +195,9 @@ const Signup = () => {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
-      console.log('sign in successful', Auth);
-      const test = await API.post('contra', '/user');
-      console.log('API', test);
+      const key = await API.post('contra', '/user');
+      setProfileKey(key);
+      console.log(key);
       setIsLoggedIn(true);
       setSnackMessage('Email confirmed');
       setSnackVariant('success');
