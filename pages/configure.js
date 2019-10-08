@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -88,15 +89,14 @@ const Configure = props => {
   const classes = useStyles();
   const { isLoggedIn } = useAuthContext();
   const { setData, profileKey, setProfileKey } = useDataContext();
-  const {
-    profileData,
-    stackOverflowUrl,
-    spectrumUrl,
-    githubUrl,
-    twitterUrl,
-    generatedKey,
-  } = props;
+  const { profileData, generatedKey } = props;
   const [selected, setSelected] = useState('settings');
+  const [stackOverflowUrl, setStackOverflowUrl] = useState(
+    props.stackOverflowUrl
+  );
+  const [spectrumUrl, setSpectrumUrl] = useState(props.spectrumUrl);
+  const [githubUrl, setGithubUrl] = useState(props.githubUrl);
+  const [twitterUrl, setTwitterUrl] = useState(props.twitterUrl);
 
   useEffect(() => {
     setProfileKey(generatedKey);
@@ -168,18 +168,21 @@ const Configure = props => {
                       variant="stackoverflow"
                       label="StackOverflow URL"
                       profileUrl={stackOverflowUrl}
+                      setProfileUrl={setStackOverflowUrl}
                     />
                     <ConfigureSite
                       src="/static/github.png"
                       variant="github"
                       label="Github URL"
                       profileUrl={githubUrl}
+                      setProfileUrl={setGithubUrl}
                     />
                     <ConfigureSite
                       src="/static/spectrum.png"
                       variant="spectrum"
                       label="Spectrum URL (coming soon)"
                       profileUrl={spectrumUrl}
+                      setProfileUrl={setSpectrumUrl}
                       unavailable
                     />
                     <ConfigureSite
@@ -187,6 +190,7 @@ const Configure = props => {
                       variant="twitter"
                       label="Twitter URL"
                       profileUrl={twitterUrl}
+                      setProfileUrl={setTwitterUrl}
                     />
                   </Grid>
                 )}

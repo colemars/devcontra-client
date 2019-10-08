@@ -101,7 +101,7 @@ const ConfigureSite = props => {
   const waiting = 'waiting';
   const loading = 'loading';
   const classes = useStyles();
-  const { src, variant, label, profileUrl, unavailable } = props;
+  const { src, variant, label, profileUrl, setProfileUrl, unavailable } = props;
   const [rotate, setRotate] = useState();
   const [animate, setAnimate] = useState();
   const [url, setUrl] = useState(profileUrl);
@@ -185,6 +185,7 @@ const ConfigureSite = props => {
 
     try {
       await createProfile(variant, urlString);
+      setProfileUrl(urlString);
       setStatus(success);
       setSnackMessage(`${variant} profile created`);
       setSnackVariant('success');
@@ -277,6 +278,7 @@ ConfigureSite.propTypes = {
   variant: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   profileUrl: PropTypes.string.isRequired,
+  setProfileUrl: PropTypes.func.isRequired,
   unavailable: PropTypes.bool,
 };
 
