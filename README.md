@@ -68,7 +68,7 @@ function App() {
 ReactDOM.render(<App />, document.querySelector('#app'));
 ```
 
-See it here in this live demo:
+Set up your profile and then plug your key into this live demo:
 
 [![Edit Button](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/beautiful-shamir-m2h0z)
 
