@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Auth } from 'aws-amplify';
 import { useRouter } from 'next/router';
+import { Auth } from 'aws-amplify';
 import { useAuthContext } from '../context/user-context';
 
 const Index = () => {
@@ -11,7 +11,7 @@ const Index = () => {
       try {
         await Auth.currentAuthenticatedUser();
         setIsLoggedIn(true);
-        router.replace('/configure');
+        router.replace('/designs');
       } catch (error) {
         setIsLoggedIn(false);
         router.replace('/signin');

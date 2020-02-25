@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   header: {
-    color: theme.palette.paper.main,
+    color: theme.palette.primary.main,
   },
   link: {
     textDecoration: 'none',
@@ -66,6 +66,9 @@ const useStyles = makeStyles(theme => ({
   checkbox: {
     color: theme.palette.secondary.dark,
   },
+  formControlLabel: {
+    color: theme.palette.primary.main,
+  },
   cssLabel: {},
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
@@ -90,7 +93,7 @@ const Copyright = () => {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link href="/" passHref>
-        <a className={classes.link}>DevContra</a>
+        <a className={classes.link}>Awtarkey</a>
       </Link>{' '}
       {new Date().getFullYear()}
     </Typography>
@@ -114,7 +117,7 @@ const SignIn = () => {
       try {
         await Auth.currentAuthenticatedUser();
         setIsLoggedIn(true);
-        router.replace('/configure');
+        router.replace('/designs');
       } catch (err) {
         console.log(err);
       }
@@ -170,7 +173,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push('/configure');
+      router.push('/designs');
     }
   }, [isLoggedIn]);
 
@@ -247,9 +250,7 @@ const SignIn = () => {
             </Grid>
             <Grid item>
               <Link href="/signup" passHref>
-                <a className={classes.link}>
-                  {"Don't have an account? Sign Up"}
-                </a>
+                <a className={classes.link}>Don't have an account? Sign Up</a>
               </Link>
             </Grid>
           </Grid>

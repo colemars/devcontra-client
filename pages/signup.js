@@ -12,11 +12,12 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AddCircleOutlined';
 import BorderClear from '@material-ui/icons/BorderClear';
 import { amber, green } from '@material-ui/core/colors';
-import { API, Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import Link from 'next/link';
 import ButtonLink from '@material-ui/core/Link';
 import Router from 'next/router';
-import { useAuthContext, useDataContext } from '../context/user-context';
+import { ContextReplacementPlugin } from 'webpack';
+import { useAuthContext } from '../context/user-context';
 import CustomizedSnackbars from '../components/SnackBarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   header: {
-    color: theme.palette.paper.main,
+    color: theme.palette.primary.main,
   },
   link: {
     textDecoration: 'none',
@@ -130,7 +131,6 @@ const Signup = () => {
   const [passwordStrength, setPasswordStrength] = useState('weak');
   const [loading, setLoading] = useState(false);
   const { setIsLoggedIn } = useAuthContext();
-  const { setProfileKey } = useDataContext();
 
   const validateForm = () => {
     return (
@@ -195,15 +195,13 @@ const Signup = () => {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
-      const key = await API.post('contra', '/user');
-      setProfileKey(key);
-      console.log(key);
       setIsLoggedIn(true);
       setSnackMessage('Email confirmed');
       setSnackVariant('success');
       setSnackOpen(true);
       Router.push('/');
     } catch (err) {
+      console.log('THIS IS AN ERROR');
       setLoading(false);
       setConfirmationError(true);
       setSnackMessage(err.message);
